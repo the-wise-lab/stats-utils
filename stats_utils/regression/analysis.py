@@ -9,7 +9,7 @@ import statsmodels.formula.api as smf
 from sklearn.utils import resample
 from statsmodels.regression.linear_model import RegressionResults
 from statsmodels.stats.anova import anova_lm
-
+from sklearn.utils import resample
 
 def add_bootstrap_methods_to_ols(results: RegressionResults):
     def bootstrap(self, n_bootstraps: int = 2000):
@@ -34,17 +34,20 @@ def add_bootstrap_methods_to_ols(results: RegressionResults):
 
         # Run the bootstrap, looping over the number of bootstraps
         for _ in range(n_bootstraps):
+
             # Resample the data with replacement
-            x_resampled, y_resampled = resample(X, y, random_state=rng)
+            x_resampled, y_resampled = resample(X, y)
 
             # Fit the model to the resampled data
             model_resampled = sm.OLS(y_resampled, x_resampled)
 
             # Fit the resampled model and store the coefficients
             results_resampled = model_resampled.fit()
+
             coef_samples.append(results_resampled.params)
 
         self.coefs_bootstrap_samples = pd.DataFrame(coef_samples)
+
 
     def conf_int_bootstrap(self, alpha: float = 0.05) -> pd.DataFrame:
         """
