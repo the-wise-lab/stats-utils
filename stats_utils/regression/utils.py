@@ -36,6 +36,7 @@ def run_regression_and_plot(
         save_fig (bool, optional): If True, saves the figure. Defaults to True.
         ax (Axes, optional): The Axes object to plot on. If None, creates a new figure and axes. Defaults to None.
         figure_kwargs (dict, optional): Keyword arguments to pass to the plt.subplots function. Defaults to None.
+        forest_plot_kwargs (dict, optional): Keyword arguments to pass to the forest_plot function. Defaults to None.
 
     Returns:
         tuple: Containing:
