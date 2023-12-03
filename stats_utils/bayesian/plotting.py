@@ -4,6 +4,7 @@ from typing import List, Optional
 import arviz as az
 import matplotlib.pyplot as plt
 import numpy as np
+import seaborn as sns
 
 
 def plot_posteriors(
