@@ -262,3 +262,55 @@ def plot_factor_loadings(
     plt.subplots_adjust(hspace=0.7)
 
     return ax
+
+def plot_scree(eigenvalues: List[float], 
+               n_factors: int = 30, 
+               show_threshold: bool = True,
+               figure_kwargs: Dict = None, 
+               scatter_kwargs: Dict = None) -> None:
+    """
+    Plots a scree plot for the provided eigenvalues with customizable figure and scatter properties.
+
+    This function creates a scree plot which is helpful to visually assess
+    the number of factors to retain in an exploratory factor analysis (EFA).
+    It plots the eigenvalues against the number of factors and draws a
+    horizontal line at y=1 for reference.
+
+    Args:
+    eigenvalues (List[float]): A list of eigenvalues from a factor analysis.
+    n_factors (int, optional): The number of factors to consider for the plot. Default is 30.
+    show_threshold (bool, optional): Whether to show a horizontal line at y=1. Default is True.
+    figure_kwargs (Dict, optional): Keyword arguments to be passed to plt.figure.
+                                    Defaults are {'figsize': (3.5, 2.3), 'dpi': 150}.
+    scatter_kwargs (Dict, optional): Keyword arguments to be passed to plt.scatter.
+                                     Defaults are {'s': 10}.
+
+    Returns:
+    None: The function plots the scree plot but does not return any value.
+    """
+
+    # Ensure kwargs are not None
+    figure_kwargs = figure_kwargs or {}
+    scatter_kwargs = scatter_kwargs or {}
+
+    # Set default values if not provided
+    figure_kwargs.setdefault("figsize", (3.5, 2.3))
+    figure_kwargs.setdefault("dpi", 150)
+    scatter_kwargs.setdefault("s", 10)
+
+    # Create figure with kwargs
+    fig = plt.figure(**figure_kwargs)
+
+    # Plot a horizontal line at y=1 for reference
+    if show_threshold:
+        plt.axhline(y=1, color="gray", linestyle=":")
+
+    # Scatter plot of eigenvalues against the range of factors with kwargs
+    plt.scatter(range(1, n_factors + 1), eigenvalues[:n_factors], **scatter_kwargs)
+
+    # X and Y axis labels
+    plt.xlabel("Factor")
+    plt.ylabel("Eigenvalue")
+
+    # Show the plot
+    plt.show()
