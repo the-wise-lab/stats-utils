@@ -9,17 +9,17 @@ import networkx as nx
 
 def build_graph_from_scores(factor_scores: List[pd.DataFrame]) -> nx.DiGraph:
     """Build a directed graph based on correlations between factor scores.
-    
+
     Args:
         factor_scores (List[pd.DataFrame]): A list of DataFrames containing factor scores.
-    
+
     Returns:
         nx.DiGraph: A directed graph (DiGraph) representing the correlations.
-    
+
     Example:
         G = build_graph_from_scores([df1, df2])
     """
-    
+
     # Check whether NetworkX is installed (required for this function, but not a dependency of stats_utils)
     try:
         import networkx as nx
@@ -32,52 +32,57 @@ def build_graph_from_scores(factor_scores: List[pd.DataFrame]) -> nx.DiGraph:
 
     # Iterate over the list of factor scores dataframes
     for i in range(1, len(factor_scores)):
-        df1 = factor_scores[i-1][[col for col in factor_scores[i-1].columns if 'ML' in col]]
-        df2 = factor_scores[i][[col for col in factor_scores[i].columns if 'ML' in col]]
+        df1 = factor_scores[i - 1][
+            [col for col in factor_scores[i - 1].columns if "ML" in col]
+        ]
+        df2 = factor_scores[i][[col for col in factor_scores[i].columns if "ML" in col]]
 
         # Iterate over the columns in df1
         for n, j in enumerate(df1.columns):
             # Generate a unique node ID for the current column in df1
             node_id = int(((i - 1) * i / 2) + n)
-            
+
             # If node is not already in the graph, add it with a 'layer' attribute
             if node_id not in G.nodes():
-                G.add_node(node_id, layer=i-1)
+                G.add_node(node_id, layer=i - 1)
 
             # Iterate over the columns in df2
             for m, k in enumerate(df2.columns):
                 # Generate a unique subnode ID for the current column in df2
                 subnode_id = int((i * (i + 1) / 2) + m)
-                
+
                 # If subnode is not already in the graph, add it with a 'layer' attribute
                 if subnode_id not in G.nodes():
                     G.add_node(subnode_id, layer=i)
-                
+
                 # Add an edge between the node and subnode with correlation as weight
                 G.add_edge(node_id, subnode_id, weight=df1[j].corr(df2[k]))
 
     return G
 
+
 def filter_graph_by_threshold(G: nx.DiGraph, threshold: float) -> nx.DiGraph:
     """Remove edges from a graph based on a threshold value.
-    
+
     Args:
         G (nx.DiGraph): A directed graph (DiGraph).
         threshold (float): Minimum weight value to keep an edge in the graph.
-    
+
     Returns:
         nx.DiGraph: A new filtered directed graph.
-    
+
     Example:
         G_filtered = filter_graph_by_threshold(G, 0.5)
     """
-    
+
     # Create a copy of the original graph
     G_filtered = G.copy()
-    
+
     # Identify edges with weights below the threshold
-    edges_to_remove = [(u, v) for u, v, d in G_filtered.edges(data=True) if d["weight"] <= threshold]
-    
+    edges_to_remove = [
+        (u, v) for u, v, d in G_filtered.edges(data=True) if d["weight"] <= threshold
+    ]
+
     # Remove the identified edges from the copied graph
     G_filtered.remove_edges_from(edges_to_remove)
 
@@ -112,7 +117,7 @@ def plot_factor_correlations(
             Defaults to {}.
         edge_labels_plot_kwargs (Any, optional): Keyword arguments to pass to nx.draw_networkx_edge_labels.
             Defaults to {}.
-        
+
 
     Returns:
         None: This function returns nothing but creates a matplotlib plot.
@@ -172,7 +177,11 @@ def plot_factor_correlations(
     # Set default kwargs for edges
     edges_plot_kwargs.setdefault("width", 3)
     nx.draw_networkx_edges(
-        G_filtered, pos, edge_color=edge_colors, node_size=node_plot_kwargs['node_size'], **edges_plot_kwargs
+        G_filtered,
+        pos,
+        edge_color=edge_colors,
+        node_size=node_plot_kwargs["node_size"],
+        **edges_plot_kwargs,
     )
 
     # Annotate edges with their weights (correlation values)
@@ -181,19 +190,30 @@ def plot_factor_correlations(
     edge_labels_plot_kwargs.setdefault("rotate", False)
     edge_labels_plot_kwargs.setdefault("label_pos", 0.6)
     nx.draw_networkx_edge_labels(
-        G_filtered,
-        pos,
-        edge_labels=edge_labels,
-        **edge_labels_plot_kwargs
+        G_filtered, pos, edge_labels=edge_labels, **edge_labels_plot_kwargs
     )
 
     plt.title("Correlations between factor scores across levels")
 
+
 def plot_factor_loadings(
-    loadings_file: str, factor_labels: List[str], cmap: LinearSegmentedColormap = None, figure_kwargs: dict = None
+    loadings_file: str,
+    factor_labels: List[str],
+    cmap: LinearSegmentedColormap = None,
+    figure_kwargs: dict = None,
 ) -> List[plt.axes]:
     """
-    Plots the factor loadings for a given hierarchical level.
+    Reads a loadings file and reshapes the data for visualization of factor loadings across multiple measures.
+
+    The loadings file should be a CSV containing factor analysis loadings with the following columns:
+        - 'itemNumber': An integer identifier for each item.
+        - 'measure': A string indicating the measure or test each item belongs to.
+        - Any number of columns prefixed with 'ML' which contain the loading values for corresponding factors.
+
+    The function melts the loadings data into a long format suitable for plotting, with each 'ML' prefixed column
+    being treated as a separate factor. It also sets up a custom colormap for the plots if one is not provided and
+    creates a bar plot for each factor's loadings on different items, separated by measure. Each subplot corresponds
+    to one factor and displays item loadings across all measures.
 
     Args:
         loadings_file (str): Path and filename of the factor loadings CSV file.
@@ -233,7 +253,7 @@ def plot_factor_loadings(
 
     # Get the unique measures and create a color map
     unique_measures = loadings_long["measure"].unique()
-    measure_labels = [i.replace("_", " ")[:-1] for i in unique_measures]
+    measure_labels = [i.replace("_", " ") for i in unique_measures]
 
     for n, factor in enumerate(sorted(loadings_long["factor"].unique())):
         ax[n].axhline(0, color="gray", linewidth=1, linestyle=":")
@@ -263,11 +283,14 @@ def plot_factor_loadings(
 
     return ax
 
-def plot_scree(eigenvalues: List[float], 
-               n_factors: int = 30, 
-               show_threshold: bool = True,
-               figure_kwargs: Dict = None, 
-               scatter_kwargs: Dict = None) -> None:
+
+def plot_scree(
+    eigenvalues: List[float],
+    n_factors: int = 30,
+    show_threshold: bool = True,
+    figure_kwargs: Dict = None,
+    scatter_kwargs: Dict = None,
+) -> None:
     """
     Plots a scree plot for the provided eigenvalues with customizable figure and scatter properties.
 
