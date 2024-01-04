@@ -200,7 +200,9 @@ def plot_factor_loadings(
     loadings_file: str,
     factor_labels: List[str],
     cmap: LinearSegmentedColormap = None,
+    ax: plt.axes = None,
     figure_kwargs: dict = None,
+    adjust_spacing: bool = True,
 ) -> List[plt.axes]:
     """
     Reads a loadings file and reshapes the data for visualization of factor loadings across multiple measures.
@@ -219,7 +221,9 @@ def plot_factor_loadings(
         loadings_file (str): Path and filename of the factor loadings CSV file.
         factor_labels (List[str]): List of labels to use for each factor.
         cmap (LinearSegmentedColormap, optional): Custom colormap to use for plotting. Defaults to None.
-
+        ax (plt.axes, optional): Axes to plot on. Defaults to None.
+        figure_kwargs (dict, optional): Keyword arguments to pass to plt.subplots. Defaults to None.
+        adjust_spacing (bool, optional): Whether to adjust the spacing between subplots. Defaults to True.
     Returns:
         matplotlib.axes._subplots.AxesSubplot: The resulting plot.
 
@@ -249,7 +253,14 @@ def plot_factor_loadings(
     # Set default figure kwargs
     figure_kwargs = figure_kwargs or {}
     figure_kwargs.setdefault("figsize", (8, 8))
-    f, ax = plt.subplots(len(loadings_long["factor"].unique()), 1, **figure_kwargs)
+    if ax is None:
+        f, ax = plt.subplots(len(loadings_long["factor"].unique()), 1, **figure_kwargs)
+    else:
+        # make sure ax is as long as the number of factors
+        if len(ax) != len(loadings_long["factor"].unique()):
+            raise ValueError(
+                "The number of axes provided does not match the number of factors."
+            )
 
     # Get the unique measures and create a color map
     unique_measures = loadings_long["measure"].unique()
@@ -275,11 +286,14 @@ def plot_factor_loadings(
         ax[n].set_title(factor_labels[n], fontweight="medium")
         ax[n].set_xlim(0, loadings_long["itemNumber"].max() + 1)
 
-    sns.despine()
+        # Remove spines
+        sns.despine(ax=ax[n])
+        
     # Add legend
     ax[n].legend(title="Measure", loc="center right", bbox_to_anchor=(1.2, 2), ncol=1)
     # Add spacing between subplots
-    plt.subplots_adjust(hspace=0.7)
+    if adjust_spacing:
+        plt.subplots_adjust(hspace=0.7)
 
     return ax
 
@@ -288,6 +302,7 @@ def plot_scree(
     eigenvalues: List[float],
     n_factors: int = 30,
     show_threshold: bool = True,
+    ax: plt.axes = None,
     figure_kwargs: Dict = None,
     scatter_kwargs: Dict = None,
 ) -> None:
@@ -303,6 +318,7 @@ def plot_scree(
     eigenvalues (List[float]): A list of eigenvalues from a factor analysis.
     n_factors (int, optional): The number of factors to consider for the plot. Default is 30.
     show_threshold (bool, optional): Whether to show a horizontal line at y=1. Default is True.
+    ax (plt.axes, optional): Axes to plot on. Defaults to None.
     figure_kwargs (Dict, optional): Keyword arguments to be passed to plt.figure.
                                     Defaults are {'figsize': (3.5, 2.3), 'dpi': 150}.
     scatter_kwargs (Dict, optional): Keyword arguments to be passed to plt.scatter.
@@ -322,18 +338,16 @@ def plot_scree(
     scatter_kwargs.setdefault("s", 10)
 
     # Create figure with kwargs
-    fig = plt.figure(**figure_kwargs)
+    if ax is None:
+        fig, ax = plt.subplots(1, 1, **figure_kwargs)
 
     # Plot a horizontal line at y=1 for reference
     if show_threshold:
-        plt.axhline(y=1, color="gray", linestyle=":")
+        ax.axhline(y=1, color="gray", linestyle=":")
 
     # Scatter plot of eigenvalues against the range of factors with kwargs
-    plt.scatter(range(1, n_factors + 1), eigenvalues[:n_factors], **scatter_kwargs)
+    ax.scatter(range(1, n_factors + 1), eigenvalues[:n_factors], **scatter_kwargs)
 
     # X and Y axis labels
-    plt.xlabel("Factor")
-    plt.ylabel("Eigenvalue")
-
-    # Show the plot
-    plt.show()
+    ax.set_xlabel("Factor")
+    ax.set_ylabel("Eigenvalue")

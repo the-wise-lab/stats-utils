@@ -11,6 +11,8 @@ def plot_grouped_corr_heatmap(
     subplot_kwargs: Dict = {},
     heatmap_kwargs: Dict = {},
     axis_labels: str = None,
+    grouping_linewidth: float = 2,
+    ax: plt.Axes = None,
     **kwargs: Any
 ) -> plt.Axes:
     """
@@ -21,6 +23,8 @@ def plot_grouped_corr_heatmap(
         subplot_kwargs (Dict, optional): Keyword arguments to pass to plt.subplots(). Defaults to {}.
         heatmap_kwargs (Dict, optional): Keyword arguments to pass to sns.heatmap(). Defaults to {}.
         axis_labels (str, optional): Label for the x and y axes. Defaults to None.
+        grouping_linewidth (float, optional): Width of the lines separating variable groups. Defaults to 2.
+        ax (plt.Axes, optional): Axes to plot on. Defaults to None.
 
     Returns:
         plt.Axes: The created axes.
@@ -47,10 +51,11 @@ def plot_grouped_corr_heatmap(
     corr = data.corr()
 
     # Set up the matplotlib figure
-    f, ax = plt.subplots(**subplot_kwargs)
+    if ax is None:
+        f, ax = plt.subplots(**subplot_kwargs)
 
     # Draw the heatmap
-    sns.heatmap(corr, **heatmap_kwargs)
+    sns.heatmap(corr, ax=ax, **heatmap_kwargs)
 
     # Draw border round outside of heatmap
     for _, spine in ax.spines.items():
@@ -84,12 +89,17 @@ def plot_grouped_corr_heatmap(
 
     # Draw gridlines to separate variable groups
     for group_range in groups.values():
-        plt.axvline(x=group_range[1], color="black", linewidth=2)
-        plt.axhline(y=group_range[1], color="black", linewidth=2)
+        ax.axvline(x=group_range[1], color="black", linewidth=grouping_linewidth)
+        ax.axhline(y=group_range[1], color="black", linewidth=grouping_linewidth)
+
+    # Set colorbar title
+    cbar = ax.collections[0].colorbar
+    cbar.ax.set_ylabel('Correlation')
 
     # Set titles and labels
-    plt.xlabel(axis_labels)
-    plt.ylabel(axis_labels)
+    ax.set_xlabel(axis_labels)
+    ax.set_ylabel(axis_labels)
+
     plt.tight_layout()
 
     return ax
