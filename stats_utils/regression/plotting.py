@@ -91,9 +91,9 @@ def plot_r2s(
 
     # make axis tick font regular weight
     for tick in ax.xaxis.get_major_ticks():
-        tick.label.set_fontweight("regular")
+        tick.label1.set_fontweight("regular")
     for tick in ax.yaxis.get_major_ticks():
-        tick.label.set_fontweight("regular")
+        tick.label1.set_fontweight("regular")
 
     # extend y lim
     ax.set_ylim(
