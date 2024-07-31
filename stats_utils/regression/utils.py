@@ -24,7 +24,24 @@ def run_regression_and_plot(
     forest_plot_kwargs: dict = None,
 ) -> Tuple[RegressionResultsWrapper, Axes]:
     """
-    Run regression, perform bootstrap resampling, and create a forest plot.
+    This function performs three steps:
+    
+    1) Run a regression analysis using the `statsmodels` package.\n
+    2) Perform bootstrap resampling to estimate confidence intervals
+         and p-values.\n
+    3) Create a forest plot of the regression coefficients (indicating
+        significance and confidence intervals).\n
+
+    > ⚠️ NOTE: This function estimates confidence intervals and p-values
+    using boostrapping. The p-values and confidence intervals given in
+    the model summary are not derived from the bootstrap samples and so 
+    may not necessarily correspond to what is shown in the figure (which
+    uses confidence intervals and significance derived from resampling).
+    To obtain p-values and confidence intervals from the bootstrap samples,
+    you can access them from the `model` object returned by this
+    function. For example, to get the 95% confidence intervals for all
+    predictors, you can use `model.conf_int_bootstrap(alpha=0.05)`,
+    and to get the p-values, you can use `model.pvalues_bootstrap`.
 
     Args:
         data (pd.DataFrame): The data frame containing the variables used
@@ -54,6 +71,24 @@ def run_regression_and_plot(
             (statsmodels.regression.linear_model.RegressionResultsWrapper):
                 The fitted model object.
             ax (plt.Axes): The Axes object with the plot.
+
+    Example:
+        ```python
+        # Fit model and plot
+        model, ax = run_regression_and_plot(
+            data,
+            "Y",
+            "X1 + X2 + X3",
+        )
+
+        # Get the 95% confidence intervals for the predictors
+        print(model.conf_int_bootstrap(alpha=0.05))
+
+        # Get the p-values for the predictors
+        print(model.pvalues_bootstrap)
+        ```
+
+
     """
     # 1. Run Regression Analysis
     # smf.ols creates a model from a formula and dataframe
