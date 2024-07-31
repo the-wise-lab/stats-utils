@@ -9,7 +9,7 @@ from statsmodels.regression.linear_model import RegressionResultsWrapper
 
 from .analysis import add_bootstrap_methods_to_ols
 from .plotting import forest_plot
-from .utils import dataframe_to_markdown
+from ..utils import dataframe_to_markdown
 
 
 def run_regression_and_plot(
