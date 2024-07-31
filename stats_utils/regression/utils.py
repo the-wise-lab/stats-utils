@@ -160,6 +160,7 @@ def ols_to_markdown_table(
     exclude_predictors: Optional[List[str]] = [],
     column_rename_dict: Optional[Dict[str, str]] = None,
     round_dict: Optional[Dict[str, int]] = None,
+    alpha_corr: float = None,
 ) -> str:
     """
     Convert the summary table of an OLS regression result to a markdown table.
@@ -184,6 +185,11 @@ def ols_to_markdown_table(
         round_dict (Optional[Dict[str, int]], optional): A dictionary to set
             the rounding precision for each column. Defaults to a pre-specified
             dictionary if not provided.
+        alpha_corr (float, optional): The alpha level for multiple comparison
+            correction. If provided, the p-values will be corrected using the
+            Holm-Bonferroni method and a new column will be added to the table
+            with the corrected p-values (i.e., multiplied by 0.05 / alpha_corr). 
+            Defaults to `None`.
 
     Returns:
         str: The markdown table representing the summary table of the OLS
@@ -273,12 +279,31 @@ def ols_to_markdown_table(
     # Drop any excluded predictors
     summary_df = summary_df.drop(index=exclude_predictors, errors="ignore")
 
+    # Correct p-values for multiple comparisons
+    if alpha_corr is not None:
+        summary_df["$p_{corr}$"] = summary_df["$p$"] * (0.05 / alpha_corr)
+        # Make sure values don't go above 1
+        summary_df["$p_{corr}$"] = summary_df["$p_{corr}$"].clip(upper=1)
+        # Put the corrected p-value column next to the original p-value column
+        correct_col_order = [
+            "$\\beta$",
+            "$\\beta_{SE}$",
+            "$t$",
+            "$p$",
+            "$p_{corr}$",
+            "$CI_{2.5}$",
+            "$CI_{97.5}$",
+        ]
+        # Reorder the columns, if each column is in the dataframe
+        summary_df = summary_df[[col for col in correct_col_order if col in summary_df.columns]]
+
     # Set rounding precision for each column
     round_dict = {
         "$\\beta$": 2,
         "$\\beta_{SE}$": 2,
         "$t$": 2,
         "$p$": 3,
+        "$p_{corr}$": 3,
         "$CI_{2.5}$": 2,
         "$CI_{97.5}$": 2,
     }
@@ -288,9 +313,15 @@ def ols_to_markdown_table(
         k: v for k, v in round_dict.items() if k in summary_df.columns
     }
 
+    # Specify pval columns
+    pval_columns = {
+        "$p$": 0.05,
+        "$p_{corr}$": 0.05,
+    }
+
     # Convert to markdown table
     markdown_table = dataframe_to_markdown(
-        summary_df, rename_dict={}, pval_column="$p$", round_dict=round_dict
+        summary_df, rename_dict={}, pval_columns=pval_columns, round_dict=round_dict
     )
 
     return markdown_table

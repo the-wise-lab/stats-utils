@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict
 import pandas as pd
 
 
@@ -35,8 +35,9 @@ def dataframe_to_markdown(
     df: pd.DataFrame,
     round_dict: dict,
     rename_dict: dict,
-    pval_column: str = None,
+    pval_columns: Dict[str, float] = None,
     repeated_value_columns: List[str] = None,
+    alpha: float = 0.05,
 ) -> str:
     """
     Processes a pandas DataFrame containing output from some type of
@@ -51,9 +52,10 @@ def dataframe_to_markdown(
         rename_dict (dict): A dictionary specifying the new column names
             with optional LaTeX formatting. Example: `{"column1":
             "$column_{1}$", "column2": "$column_{2}$"}`
-        pval_column (str): The name of the column containing p-values. If
-            specified, the column will be converted to a string and
-            significant values will be bolded. Defaults to `None`.
+        pval_columns (Dict[str, float]): A dictionary specifying the
+            significance level for each p-value column. If specified, the
+            column will be converted to a string and significant values will
+            be bolded. Example: `{"pval": 0.05, "pval_corr": 0.01}`
         repeated_value_columns (List[str]): A list of column names that
             should be formatted to show repeated values. For example, if we
             have multiple target variables and the same predictor variables,
@@ -92,8 +94,8 @@ def dataframe_to_markdown(
         df[col] = pd.to_numeric(df[col])
 
         # Identify significant rows
-        if col == pval_column:
-            significant_rows = df[col].values < 0.05
+        if col in pval_columns:
+            significant_rows = df[col].values < pval_columns[col]
 
         # Round the column to the specified number of decimal places
         df[col] = (
@@ -103,7 +105,7 @@ def dataframe_to_markdown(
         )
 
         # Bold significant rows
-        if col == pval_column:
+        if col in pval_columns:
             df[col] = df.apply(
                 lambda row: (
                     f"**{row[col]}**"
