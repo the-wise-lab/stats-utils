@@ -119,4 +119,4 @@ def dataframe_to_markdown(
     df_renamed = df.rename(columns=rename_dict)
 
     # Convert to Markdown string
-    return df_renamed.to_markdown(index=False, floatfmt=precisions)
+    return df_renamed.to_markdown(floatfmt=precisions)
