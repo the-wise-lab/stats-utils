@@ -188,7 +188,7 @@ def ols_to_markdown_table(
         alpha_corr (float, optional): The alpha level for multiple comparison
             correction. If provided, the p-values will be corrected using the
             Holm-Bonferroni method and a new column will be added to the table
-            with the corrected p-values (i.e., multiplied by 0.05 / alpha_corr). 
+            with the corrected p-values (i.e., multiplied by 0.05 / alpha_corr).
             Defaults to `None`.
 
     Returns:
@@ -295,7 +295,9 @@ def ols_to_markdown_table(
             "$CI_{97.5}$",
         ]
         # Reorder the columns, if each column is in the dataframe
-        summary_df = summary_df[[col for col in correct_col_order if col in summary_df.columns]]
+        summary_df = summary_df[
+            [col for col in correct_col_order if col in summary_df.columns]
+        ]
 
     # Set rounding precision for each column
     round_dict = {
@@ -321,7 +323,10 @@ def ols_to_markdown_table(
 
     # Convert to markdown table
     markdown_table = dataframe_to_markdown(
-        summary_df, rename_dict={}, pval_columns=pval_columns, round_dict=round_dict
+        summary_df,
+        rename_dict={},
+        pval_columns=pval_columns,
+        round_dict=round_dict,
     )
 
     return markdown_table
