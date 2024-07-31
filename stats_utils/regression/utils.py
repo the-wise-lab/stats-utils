@@ -1,5 +1,5 @@
 import os
-from typing import Tuple
+from typing import Dict, List, Optional, Tuple
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -9,6 +9,7 @@ from statsmodels.regression.linear_model import RegressionResultsWrapper
 
 from .analysis import add_bootstrap_methods_to_ols
 from .plotting import forest_plot
+from .utils import dataframe_to_markdown
 
 
 def run_regression_and_plot(
@@ -25,7 +26,7 @@ def run_regression_and_plot(
 ) -> Tuple[RegressionResultsWrapper, Axes]:
     """
     This function performs three steps:
-    
+
     1) Run a regression analysis using the `statsmodels` package.\n
     2) Perform bootstrap resampling to estimate confidence intervals
          and p-values.\n
@@ -34,7 +35,7 @@ def run_regression_and_plot(
 
     > ⚠️ NOTE: This function estimates confidence intervals and p-values
     using boostrapping. The p-values and confidence intervals given in
-    the model summary are not derived from the bootstrap samples and so 
+    the model summary are not derived from the bootstrap samples and so
     may not necessarily correspond to what is shown in the figure (which
     uses confidence intervals and significance derived from resampling).
     To obtain p-values and confidence intervals from the bootstrap samples,
@@ -150,3 +151,146 @@ def run_regression_and_plot(
     # 5. Return Axes This will return the ax object, which can be used for
     # further customization outside of the function
     return model, ax
+
+
+def ols_to_markdown_table(
+    ols_result: RegressionResultsWrapper,
+    use_bootstrapping: bool = True,
+    predictor_rename_dict: Optional[Dict[str, str]] = None,
+    exclude_predictors: Optional[List[str]] = [],
+    column_rename_dict: Optional[Dict[str, str]] = None,
+    round_dict: Optional[Dict[str, int]] = None,
+) -> str:
+    """
+    Convert the summary table of an OLS regression result to a markdown table.
+    The intercept is dropped from the output.
+
+    Uses pre-specified column renaming and rounding precision for each column.
+
+    Args:
+        ols_result (sm.RegressionResultsWrapper):
+            The result object of an OLS regression.
+        use_bootstrapping (bool, optional): Whether to replace CIs and p-values
+            with bootstrapped values if available. Defaults to `True`.
+        predictor_rename_dict (Optional[Dict[str, str]], optional): A
+            dictionary to rename the predictors in the summary table. If not
+            included, predictors will be tidied slightly instead. Defaults to
+            `None`.
+        exclude_predictors (Optional[List[str]], optional): A list of
+            predictors to exclude from the summary table. Defaults to `[]`.
+        column_rename_dict (Optional[Dict[str, str]], optional): A
+            dictionary to rename the summary table columns. Defaults to a
+            pre-specified dictionary if not provided.
+        round_dict (Optional[Dict[str, int]], optional): A dictionary to set
+            the rounding precision for each column. Defaults to a pre-specified
+            dictionary if not provided.
+
+    Returns:
+        str: The markdown table representing the summary table of the OLS
+            regression result.
+
+    Example:
+        ```python
+        # Fit model
+        model = smf.ols("Y ~ X1 + X2", data).fit()
+
+        # Convert summary table to markdown
+        markdown_table = ols_to_markdown_table(model)
+        ```
+    """
+
+    # Default column renaming dict
+    if column_rename_dict is None:
+        column_rename_dict = {
+            "Coef.": "$\\beta$",
+            "Std.Err.": "$\\beta_{SE}$",
+            "t": "$t$",
+            "P>|t|": "$p$",
+            "[0.025": "$CI_{2.5}$",
+            "0.975]": "$CI_{97.5}$",
+        }
+
+    # Default rounding precision dict
+    if round_dict is None:
+        round_dict = {
+            "$\\beta$": 2,
+            "$\\beta_{SE}$": 2,
+            "$t$": 2,
+            "$p$": 3,
+            "$CI_{2.5}$": 2,
+            "$CI_{97.5}$": 2,
+        }
+
+    # Column renaming dict
+    column_rename_dict = {
+        "Coef.": "$\\beta$",
+        "Std.Err.": "$\\beta_{SE}$",
+        "t": "$t$",
+        "P>|t|": "$p$",
+        "[0.025": "$CI_{2.5}$",
+        "0.975]": "$CI_{97.5}$",
+    }
+
+    # Convert the summary table to a DataFrame
+    summary_df = pd.DataFrame(ols_result.summary2().tables[1])
+
+    # Rename the columns
+    summary_df = summary_df.rename(columns=column_rename_dict)
+
+    # Replace CIs and pvals with bootstrapped values if bootstrapping was used
+    if use_bootstrapping:
+        # Check whether the model has model.pvalues_bootstrap attribute
+        if hasattr(ols_result, "pvalues_bootstrap"):
+            # Replace p-values with bootstrapped values
+            summary_df["$p$"] = ols_result.pvalues_bootstrap
+            # Replace CI values with bootstrapped values
+            summary_df["$CI_{2.5}$"] = ols_result.conf_int()[0]
+            summary_df["$CI_{97.5}$"] = ols_result.conf_int()[1]
+            # Remove the t-values column
+            summary_df = summary_df.drop(columns="$t$")
+        else:
+            print(
+                "OLS model does not have pvalues_bootstrap attribute. "
+                "Using original values."
+            )
+
+    # Rename the predictors
+    # If we don't have a rename dict, tidy the predictor names slightly
+    if not predictor_rename_dict:
+        # Replace __ with space
+        summary_df.index = summary_df.index.str.replace("__", " ")
+        # Replace _ with space
+        summary_df.index = summary_df.index.str.replace("_", " ")
+        # Capitalize the first letter of each word
+        summary_df.index = summary_df.index.str.title()
+    else:
+        # Rename the predictors using the provided dictionary
+        summary_df = summary_df.rename(index=predictor_rename_dict)
+
+    # Drop the intercept row
+    summary_df = summary_df.drop(index="Intercept")
+
+    # Drop any excluded predictors
+    summary_df = summary_df.drop(index=exclude_predictors, errors="ignore")
+
+    # Set rounding precision for each column
+    round_dict = {
+        "$\\beta$": 2,
+        "$\\beta_{SE}$": 2,
+        "$t$": 2,
+        "$p$": 3,
+        "$CI_{2.5}$": 2,
+        "$CI_{97.5}$": 2,
+    }
+
+    # Remove columns that arne't needed from the rounding dict
+    round_dict = {
+        k: v for k, v in round_dict.items() if k in summary_df.columns
+    }
+
+    # Convert to markdown table
+    markdown_table = dataframe_to_markdown(
+        summary_df, rename_dict={}, pval_column="$p$", round_dict=round_dict
+    )
+
+    return markdown_table
