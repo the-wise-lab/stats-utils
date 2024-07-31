@@ -76,6 +76,12 @@ def dataframe_to_markdown(
     # Create a copy of the DataFrame
     df = df.copy()
 
+    # Reset index just in case it's out of order
+    df = df.reset_index()
+
+    # Rename the index column as "predictor"
+    df = df.rename(columns={"index": "Predictor"})
+
     # Get rounding precision for each column as a tuple in the column order, as
     # a formatting string
     precisions = tuple([f".{round_dict.get(col, 0)}f" for col in df.columns])
@@ -116,4 +122,4 @@ def dataframe_to_markdown(
     df_renamed = df.rename(columns=rename_dict)
 
     # Convert to Markdown string
-    return df_renamed.to_markdown(floatfmt=precisions)
+    return df_renamed.to_markdown(index=False, floatfmt=precisions)
