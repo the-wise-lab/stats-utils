@@ -1,11 +1,15 @@
-# Utilities for statistical analysis
+# Stats utilities
 
-This repository contains functions for statistical analysis. 
+This repository contains various stats-related utilities.
 
 ## Installation
 
-First, clone or download this repository. Once in the repository folder, run the following command to install the package:
+First, clone or download this repository. Once in the repository directory, run the following command to install the package:
 
 ```bash
 pip install -e .
 ```
+
+## Documentation
+
+The documentation for this package can be found [here](https://stats-utils.thewiselab.org).
