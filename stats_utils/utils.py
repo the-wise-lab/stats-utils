@@ -76,9 +76,6 @@ def dataframe_to_markdown(
     # Create a copy of the DataFrame
     df = df.copy()
 
-    # Reset index just in case it's out of order
-    df = df.reset_index(drop=True)
-
     # Get rounding precision for each column as a tuple in the column order, as
     # a formatting string
     precisions = tuple([f".{round_dict.get(col, 0)}f" for col in df.columns])

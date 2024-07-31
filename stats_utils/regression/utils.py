@@ -256,7 +256,7 @@ def ols_to_markdown_table(
 
     # Rename the predictors
     # If we don't have a rename dict, tidy the predictor names slightly
-    if not predictor_rename_dict:
+    if predictor_rename_dict is None:
         # Replace __ with space
         summary_df.index = summary_df.index.str.replace("__", " ")
         # Replace _ with space
