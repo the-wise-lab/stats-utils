@@ -19,19 +19,24 @@ def plot_grouped_corr_heatmap(
     Plot a correlation heatmap with grouped variable labels.
 
     Args:
-        data (pd.DataFrame): DataFrame with variables named in the format "group_variable".
-        subplot_kwargs (Dict, optional): Keyword arguments to pass to plt.subplots(). Defaults to {}.
-        heatmap_kwargs (Dict, optional): Keyword arguments to pass to sns.heatmap(). Defaults to {}.
-        axis_labels (str, optional): Label for the x and y axes. Defaults to None.
-        grouping_linewidth (float, optional): Width of the lines separating variable groups. Defaults to 2.
-        ax (plt.Axes, optional): Axes to plot on. Defaults to None.
+        data (pd.DataFrame): DataFrame with variables named in the format
+            "group_variable".
+        subplot_kwargs (Dict, optional): Keyword arguments to pass to
+            `plt.subplots()`. Defaults to `{}`.
+        heatmap_kwargs (Dict, optional): Keyword arguments to pass to
+            `sns.heatmap()`. Defaults to `{}`.
+        axis_labels (str, optional): Label for the x and y axes. Defaults
+            to `None`.
+        grouping_linewidth (float, optional): Width of the lines separating
+            variable groups. Defaults to `2`.
+        ax (plt.Axes, optional): Axes to plot on. Defaults to `None`.
 
     Returns:
         plt.Axes: The created axes.
 
     Example:
         ax = plot_grouped_corr_heatmap(data)
-        plt.savefig('../correlation_matrix.png', dpi=300)
+        plt.savefig('../correlation_matrix.png', dpi=`300`)
     """
 
     # Set default kwargs
@@ -67,7 +72,9 @@ def plot_grouped_corr_heatmap(
     # Define groups and their labels dynamically
     groups = {
         key: [min(idx), max(idx) + 1]
-        for key, idx in pd.Series({var: idx for idx, var in enumerate(variables)})
+        for key, idx in pd.Series(
+            {var: idx for idx, var in enumerate(variables)}
+        )
         .groupby(lambda x: x.split("_")[0])
         .agg(list)
         .to_dict()
@@ -84,17 +91,25 @@ def plot_grouped_corr_heatmap(
     ax.set_yticklabels(labels)
 
     # Rotate the tick labels and set their alignment
-    plt.setp(ax.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
-    plt.setp(ax.get_yticklabels(), rotation=0, ha="right", rotation_mode="anchor")
+    plt.setp(
+        ax.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor"
+    )
+    plt.setp(
+        ax.get_yticklabels(), rotation=0, ha="right", rotation_mode="anchor"
+    )
 
     # Draw gridlines to separate variable groups
     for group_range in groups.values():
-        ax.axvline(x=group_range[1], color="black", linewidth=grouping_linewidth)
-        ax.axhline(y=group_range[1], color="black", linewidth=grouping_linewidth)
+        ax.axvline(
+            x=group_range[1], color="black", linewidth=grouping_linewidth
+        )
+        ax.axhline(
+            y=group_range[1], color="black", linewidth=grouping_linewidth
+        )
 
     # Set colorbar title
     cbar = ax.collections[0].colorbar
-    cbar.ax.set_ylabel('Correlation')
+    cbar.ax.set_ylabel("Correlation")
 
     # Set titles and labels
     ax.set_xlabel(axis_labels)

@@ -15,23 +15,37 @@ def plot_posteriors(
     **kwargs
 ) -> None:
     """
-    Creates a summary of the Bayesian results and plots the posterior distributions with optional keyword
-    arguments for plotting functions. Optionally saves the figure to a file.
+    Creates a summary of the Bayesian results and plots the posterior
+    distributions with optional keyword arguments for plotting functions.
+    Optionally saves the figure to a file.
 
     Args:
-        results: The results object from the Bayesian model fit, typically an `InferenceData` object.
-        var_names: A list of variable names to summarize and plot.
-        titles: A list of titles corresponding to the variables. Each title corresponds to one variable name.
-        file_name: Optional; The name of the file to save the plot. If None, the plot is not saved.
-        **kwargs: Optional keyword arguments passed to Seaborn KDE plot function.
+        results (az.InferenceData): The results object from the Bayesian
+            model fit, typically an Arviz `InferenceData` object.
+        var_names (List[str]): A list of variable names to summarize and plot.
+        titles (List[str]): A list of titles corresponding to the variables.
+            Each title corresponds to one variable name.
+        file_name (Optional[str]): Optional; The name of the file to save
+            the plot. If `None`, the plot is not saved.
+        **kwargs (Any): Optional keyword arguments passed to Seaborn KDE
+            plot function.
 
     Returns:
         None: This function does not return anything.
 
     Example:
-        >>> plot_bayesian_results(results_2, ["mu", "tau", "eta"], ["Mean", "Standard Deviation", "Noise"],
-                                  file_name="my_model_posteriors.svg", linewidth=2.5, linestyle='--')
+        ```
+        plot_bayesian_results(
+            results_2,
+            ["mu", "tau", "eta"],
+            ["Mean", "Standard Deviation", "Noise"],
+            file_name="my_model_posteriors.svg",
+            linewidth=2.5,
+            linestyle="--",
+        )
+        ```
     """
+
     # Creating a summary for the specified variables
     summary = az.summary(
         results,
@@ -51,7 +65,9 @@ def plot_posteriors(
     # Determine the colour of the distribution based on 95% HDI
     for i, v in enumerate(var_names):
         var_summary = summary.loc[v]
-        if np.sign(var_summary["hdi_2.5%"]) == np.sign(var_summary["hdi_97.5%"]):
+        if np.sign(var_summary["hdi_2.5%"]) == np.sign(
+            var_summary["hdi_97.5%"]
+        ):
             colours[i] = palette[1]
 
     # Plotting distributions for each variable
@@ -91,24 +107,34 @@ def plot_posterior_forest(
     **kwargs
 ) -> None:
     """
-    Creates a forest plot of the Bayesian results with point estimates and credible intervals,
-    with variables displayed along the x-axis.
+    Creates a forest plot of the Bayesian results with point estimates and
+    credible intervals, with variables displayed along the x-axis.
 
     Args:
-        results: The results object from the Bayesian model fit, typically an `InferenceData` object.
-        var_names: A list of variable names to summarize and plot.
-        titles: A list of titles corresponding to the variables. Each title corresponds to one variable name.
-        credible_interval: The credible interval to use for the error bars (default is 0.95).
-        file_name: Optional; The name of the file to save the plot. If None, the plot is not saved.
-        **kwargs: Optional keyword arguments passed to the plotting functions.
+        results (az.InferenceData): The results object from the Bayesian model
+            fit, typically an `InferenceData` object.
+        var_names (List[str]): A list of variable names to summarize and plot.
+        titles (List[str]): A list of titles corresponding to the variables.
+            Each title corresponds to one variable name.
+        credible_interval (float): The credible interval to use for the
+            error bar. Defaults to `0.95`.
+        file_name (Optional[str]): Optional; The name of the file to
+            save the plot. If `None`, the plot is not saved.
+        **kwargs (Any): Optional keyword arguments passed to the plotting
+            functions.
 
     Returns:
         None: This function does not return anything.
 
     Example:
-        >>> plot_forest_bayesian_results(results_2, ["mu", "tau", "eta"],
-                                         ["Mean", "Standard Deviation", "Noise"],
-                                         file_name="my_model_forest_plot.svg")
+        ```
+        plot_forest_bayesian_results(
+                results_2,
+                ["mu", "tau", "eta"],
+                ["Mean", "Standard Deviation", "Noise"],
+                file_name="my_model_forest_plot.svg",
+            )
+        ```
     """
     # Creating a summary for the specified variables
     summary = az.summary(

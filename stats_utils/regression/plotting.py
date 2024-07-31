@@ -1,8 +1,7 @@
-from typing import Any, Dict, Tuple, Union
+from typing import Dict, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 import seaborn as sns
 from matplotlib.collections import LineCollection
 from matplotlib.colors import LinearSegmentedColormap
@@ -18,13 +17,18 @@ def plot_r2s(
     show_ylabel: bool = True,
 ) -> None:
     """
-    Function to plot the adjusted r2s for each model fit in a sequential regression.
+    Function to plot the adjusted r2s for each model fit in a sequential
+    regression.
 
     Args:
-        model_output (ModelOutput): Model output from sequential_regression function.
-        save_path (Union[str, None], optional): Path to save figure to. Defaults to None.
-        ax (plt.Axes, optional): Axis to plot on. If none, will create a new figure. Defaults to None.
-        show_ylabel (bool, optional): Whether to show the y label. Defaults to True.
+        model_output (ModelOutput): Model output from sequential_regression
+            function.
+        save_path (Union[str, None], optional): Path to save figure to.
+            Defaults to `None`.
+        ax (plt.Axes, optional): Axis to plot on. If `None`, will create a new
+            figure. Defaults to `None`.
+        show_ylabel (bool, optional): Whether to show the y label. Defaults
+            to `True`.
     """
 
     cmap_colours = ["#FF00AA", "#B123C4", "#0074FF"]
@@ -120,26 +124,55 @@ def forest_plot(
     show_xlabel: bool = True,
     show_ylabel: bool = True,
     exclude_param_names: list = None,
-    significance_thresholds: Dict[float, str] = {0.05: "*", 0.01: "**", 0.001: "***"},
+    significance_thresholds: Dict[float, str] = {
+        0.05: "*",
+        0.01: "**",
+        0.001: "***",
+    },
 ) -> None:
     """
-    Creates a forest plot of the betas with 95% confidence intervals and significance stars.
+    Creates a forest plot of the betas with 95% confidence intervals and
+    significance stars.
 
     Args:
-        model (RegressionResultsWrapper): A fitted regression model from statsmodels.
-        alpha (float, optional): The significance level for the confidence intervals and significance stars.
-            Defaults to 0.05.
-        ax (plt.Axes, optional): The axes to plot on. If None, a new figure and axes will be created.
-            Defaults to None.
-        rename_dict (dict, optional): A dictionary of variable names to rename. Defaults to None.
-        capitalise_vars (bool, optional): Whether to capitalise the variable names. Defaults to True.
-        show_xlabel (bool, optional): Whether to show the x label. Defaults to True.
-        show_ylabel (bool, optional): Whether to show the y label. Defaults to True.
-        exclude_param_names (list, optional): A list of parameter names to exclude from the plot. Defaults to None.
-        significance_thresholds (Dict[float, str], optional): A dictionary of significance thresholds and the
-            corresponding significance stars. Defaults to {0.05: "*", 0.01: "**", 0.001: "***"}.
+        model (RegressionResultsWrapper): A fitted regression model from
+            statsmodels.
+        alpha (float, optional): The significance level for the confidence
+            intervals and significance stars. Defaults to `0.05`.
+        ax (plt.Axes, optional): The axes to plot on. If `None`, a new figure
+            and axes will be created. Defaults to `None`.
+        rename_dict (dict, optional): A dictionary of variable names to rename.
+            Defaults to `None`.
+        capitalise_vars (bool, optional): Whether to capitalise the variable
+            names. Defaults to `True`.
+        show_xlabel (bool, optional): Whether to show the x label. Defaults
+            to `True`.
+        show_ylabel (bool, optional): Whether to show the y label. Defaults
+            to `True`.
+        exclude_param_names (list, optional): A list of parameter names to
+            exclude from the plot. Defaults to `None`.
+        significance_thresholds (Dict[float, str], optional): A dictionary of
+            significance thresholds and the corresponding significance stars.
+            Defaults to `{0.05: "*", 0.01: "**", 0.001: "***"}`.
+
     Returns:
-        None: The function does not return any value. It displays the forest plot using Matplotlib.
+        None: The function does not return any value. It displays the forest
+            plot using Matplotlib.
+
+    Examples:
+        ```python
+        import statsmodels.api as sm
+        from stats_utils.regression import forest_plot
+
+        # Load the data
+        data = sm.datasets.get_rdataset("mtcars", "datasets").data
+
+        # Fit a linear regression model
+        model = sm.OLS(data["mpg"], sm.add_constant(data["wt"])).fit()
+
+        # Create a forest plot
+        forest_plot(model)
+        ```
     """
 
     # Get default colours
@@ -149,7 +182,10 @@ def forest_plot(
     if exclude_param_names is None:
         exclude_param_names = []
     include = np.array(
-        [param_name not in exclude_param_names for param_name in model.params.index[1:]]
+        [
+            param_name not in exclude_param_names
+            for param_name in model.params.index[1:]
+        ]
     )
 
     # Get the coefficients and their standard errors
@@ -209,8 +245,11 @@ def forest_plot(
             # Get the significance star string
             star_string = ""
             # Start from the highest threshold
-            for threshold in sorted(significance_thresholds.keys(), reverse=True):
-                # If the p-value is lower than the threshold, add the corresponding significance star
+            for threshold in sorted(
+                significance_thresholds.keys(), reverse=True
+            ):
+                # If the p-value is lower than the threshold, add the
+                # corresponding significance star
                 if p_value < threshold:
                     star_string = significance_thresholds[threshold]
             # Add the star
@@ -227,7 +266,8 @@ def forest_plot(
     # Rename the variables
     if rename_dict is not None:
         var_names = [
-            rename_dict[var] if var in rename_dict else var for var in coefs.index
+            rename_dict[var] if var in rename_dict else var
+            for var in coefs.index
         ]
     else:
         var_names = coefs.index

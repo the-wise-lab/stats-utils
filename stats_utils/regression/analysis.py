@@ -9,17 +9,46 @@ import statsmodels.formula.api as smf
 from sklearn.utils import resample
 from statsmodels.regression.linear_model import RegressionResults
 from statsmodels.stats.anova import anova_lm
-from sklearn.utils import resample
 
-def add_bootstrap_methods_to_ols(results: RegressionResults):
-    def bootstrap(self, n_bootstraps: int = 2000):
+
+def add_bootstrap_methods_to_ols(
+    results: RegressionResults,
+) -> RegressionResults:
+    """
+    Add bootstrap methods to the OLS results class.
+
+    Args:
+        results (RegressionResults): The results of an OLS regression.
+
+    Returns:
+        RegressionResults: The results object with the bootstrap methods added.
+
+    Example:
+        ```
+        # Assuming `results` is the output of an OLS regression
+        results = add_bootstrap_methods_to_ols(results)
+        results.bootstrap(n_bootstraps=2000)
+        conf_int = results.conf_int_bootstrap()
+
+        # Access the pvals
+        pvals = results.pvalues_bootstrap
+        ```
+    """
+
+    def bootstrap(
+        self, n_bootstraps: int = 2000, random_state: int = 42
+    ) -> None:
         """
-        Perform a bootstrap on the OLS model, allowing for the estimation of confidence intervals.
+        Perform a bootstrap on the OLS model, allowing for the estimation of
+        confidence intervals.
 
         Results are stored in the `coefs_bootstrap_samples` attribute.
 
         Args:
-            n_bootstraps (int, optional): Number of bootstrap samples. Defaults to 1000.
+            n_bootstraps (int, optional): Number of bootstrap samples.
+                Defaults to `1000`.
+            random_state (int, optional): Random state for reproducibility.
+                Defaults to `42`.
         """
 
         # Get the exog and endog variables
@@ -36,7 +65,7 @@ def add_bootstrap_methods_to_ols(results: RegressionResults):
         for _ in range(n_bootstraps):
 
             # Resample the data with replacement
-            x_resampled, y_resampled = resample(X, y)
+            x_resampled, y_resampled = resample(X, y, random_state=rng)
 
             # Fit the model to the resampled data
             model_resampled = sm.OLS(y_resampled, x_resampled)
@@ -48,19 +77,20 @@ def add_bootstrap_methods_to_ols(results: RegressionResults):
 
         self.coefs_bootstrap_samples = pd.DataFrame(coef_samples)
 
-
     def conf_int_bootstrap(self, alpha: float = 0.05) -> pd.DataFrame:
         """
-        Get the confidence intervals (and p values) for the coefficients of the OLS model,
-        based on the bootstrapped coefficients.
+        Get the confidence intervals (and p values) for the coefficients of the
+        OLS model, based on the bootstrapped coefficients.
 
-        Useful for situations where the assumptions of the OLS model are not met.
+        Useful for situations where the assumptions of the OLS model are not
+        met.
 
         Args:
-            alpha (float, optional): Alpha level. Defaults to 0.05.
+            alpha (float, optional): Alpha level. Defaults to `0.05`.
 
         Returns:
-            pd.DataFrame: Dataframe of confidence intervals, with columns 0 and 1
+            pd.DataFrame: Dataframe of confidence intervals, with
+                columns `0` and `1`
         """
 
         # Get the lower and upper bounds of the confidence interval
@@ -73,7 +103,8 @@ def add_bootstrap_methods_to_ols(results: RegressionResults):
         ) / self.coefs_bootstrap_samples.shape[0]
         p_values = 2 * np.minimum(p_values, 1 - p_values)
 
-        # Store the confidence intervals in the same format as the normal conf_int method
+        # Store the confidence intervals in the same format as the normal
+        # conf_int method
         conf_int = pd.DataFrame(
             np.array([lower_bound, upper_bound]).T,
             columns=[0, 1],
@@ -94,7 +125,17 @@ def add_bootstrap_methods_to_ols(results: RegressionResults):
 
 @dataclass
 class ModelOutput:
-    """Dataclass to store the output of the sequential regression function"""
+    """
+    Dataclass to store the output of the sequential regression function
+
+    Attributes:
+        models (List[smf.ols]): List of fitted models.
+        anova_results (pd.DataFrame): ANOVA results.
+        r2s (List[float]): List of adjusted r2s.
+        summaries (List[str]): List of model summaries.
+        n_solutions (int): Number of solutions.
+        y_var (str): Name of dependent variable.
+    """
 
     models: List[smf.ols]
     anova_results: pd.DataFrame
@@ -115,16 +156,21 @@ def sequential_regression(
     Fits a series of regression models across different factor solutions.
 
     Args:
-        data (pd.DataFrame): Dataframe containing dependent variable, covariates (age and gender),
-        and factor scores. Assumes that factor scores are named Sol{N}_ML{M} where N is the total number of
-        factors and M is the number of each factor within that solution.
+        data (pd.DataFrame): Dataframe containing dependent variable,
+            covariates (age and gender), and factor scores. Assumes that
+            factor scores are named `Sol{N}_ML{M}` where `N` is the total
+            number of factors and `M` is the number of each factor within
+            that solution.
         y (str): Name of dependent variable.
-        n_solutions (int, optional): Number of solutions. Defaults to 4.
-        covariates (List[str]): List of covariates to include in the model (in addition to age and gender). Defaults to [].
-        n_bootstraps (int, optional): Number of bootstraps to run. Defaults to 2000.
+        n_solutions (int, optional): Number of solutions. Defaults to `4`.
+        covariates (List[str]): List of covariates to include in the model
+            (in addition to age and gender). Defaults to `[]`.
+        n_bootstraps (int, optional): Number of bootstraps to run. Defaults
+            to `2000`.
 
     Returns:
-        Tuple[List[smf.ols], pd.DataFrame, List[float]]: Returns the list of fitted models, the ANOVA table, and a list of adjusted r2s.
+        Tuple[List[smf.ols], pd.DataFrame, List[float]]: Returns the list of
+            fitted models, the ANOVA table, and a list of adjusted r2s.
     """
 
     # List to store model fits
@@ -172,5 +218,3 @@ def sequential_regression(
     summaries = [m.summary() for m in models]
 
     return ModelOutput(models, anova_results, r2s, summaries, n_solutions, y)
-
-
