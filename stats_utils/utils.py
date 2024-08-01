@@ -104,8 +104,15 @@ def dataframe_to_markdown(
             .astype(str)
         )
 
-        # Bold significant rows
+        # Bold significant rows and replace 0.000 with "<0.001"
         if col in pval_columns:
+
+            # Replace 0.000 with "<0.001"
+            df[col] = df[col].apply(
+                lambda x: "<.001" if x == "0.000" else x
+            )
+
+            # Bold significant rows
             df[col] = df.apply(
                 lambda row: (
                     f"**{row[col]}**"
@@ -114,6 +121,7 @@ def dataframe_to_markdown(
                 ),
                 axis=1,
             )
+
 
     # Format columns with repeated values
     if repeated_value_columns is not None:
