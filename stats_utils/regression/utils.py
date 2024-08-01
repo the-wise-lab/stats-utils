@@ -166,8 +166,6 @@ def ols_to_markdown_table(
     Convert the summary table of an OLS regression result to a markdown table.
     The intercept is dropped from the output.
 
-    Uses pre-specified column renaming and rounding precision for each column.
-
     Args:
         ols_result (sm.RegressionResultsWrapper):
             The result object of an OLS regression.
@@ -188,8 +186,8 @@ def ols_to_markdown_table(
         alpha_corr (float, optional): The alpha level for multiple comparison
             correction. If provided, the p-values will be corrected using the
             Holm-Bonferroni method and a new column will be added to the table
-            with the corrected p-values (i.e., multiplied by 0.05 / alpha_corr).
-            Defaults to `None`.
+            with the corrected p-values (i.e., multiplied by
+            0.05 / alpha_corr). Defaults to `None`.
 
     Returns:
         str: The markdown table representing the summary table of the OLS
@@ -223,19 +221,10 @@ def ols_to_markdown_table(
             "$\\beta_{SE}$": 2,
             "$t$": 2,
             "$p$": 3,
+            "$p_{corr}$": 3,
             "$CI_{2.5}$": 2,
             "$CI_{97.5}$": 2,
         }
-
-    # Column renaming dict
-    column_rename_dict = {
-        "Coef.": "$\\beta$",
-        "Std.Err.": "$\\beta_{SE}$",
-        "t": "$t$",
-        "P>|t|": "$p$",
-        "[0.025": "$CI_{2.5}$",
-        "0.975]": "$CI_{97.5}$",
-    }
 
     # Convert the summary table to a DataFrame
     summary_df = pd.DataFrame(ols_result.summary2().tables[1])
@@ -298,17 +287,6 @@ def ols_to_markdown_table(
         summary_df = summary_df[
             [col for col in correct_col_order if col in summary_df.columns]
         ]
-
-    # Set rounding precision for each column
-    round_dict = {
-        "$\\beta$": 2,
-        "$\\beta_{SE}$": 2,
-        "$t$": 2,
-        "$p$": 3,
-        "$p_{corr}$": 3,
-        "$CI_{2.5}$": 2,
-        "$CI_{97.5}$": 2,
-    }
 
     # Remove columns that arne't needed from the rounding dict
     round_dict = {

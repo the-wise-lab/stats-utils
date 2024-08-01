@@ -37,7 +37,7 @@ def dataframe_to_markdown(
     rename_dict: dict,
     pval_columns: Dict[str, float] = None,
     repeated_value_columns: List[str] = None,
-    alpha: float = 0.05,
+    rename_index: str = "Predictor",
 ) -> str:
     """
     Processes a pandas DataFrame containing output from some type of
@@ -61,6 +61,8 @@ def dataframe_to_markdown(
             have multiple target variables and the same predictor variables,
             we can format the target variables to show repeated values.
             Defaults to `[]`.
+        rename_index (str): The name to give to the index column. Defaults
+            to "Predictor". If `None`, the index is dropped.
 
     Returns:
         str: A string representing the DataFrame in markdown format.
@@ -81,8 +83,14 @@ def dataframe_to_markdown(
     # Reset index just in case it's out of order
     df = df.reset_index()
 
-    # Rename the index column as "predictor"
-    df = df.rename(columns={"index": "Predictor"})
+    # Rename the index column 
+    if rename_index is not None:
+        df = df.rename(columns={"index": rename_index})
+    else:
+        df = df.reset_index(drop=True)
+        # Remove any "index" column that might be present
+        if "index" in df.columns:
+            df = df.drop(columns=["index"])
 
     # Get rounding precision for each column as a tuple in the column order, as
     # a formatting string
