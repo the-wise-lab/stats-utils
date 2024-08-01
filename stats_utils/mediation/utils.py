@@ -1,6 +1,6 @@
 import pandas as pd
 from typing import Dict, Optional
-from ..utils import dataframe_to_markdown
+from ..utils import dataframe_to_markdown, process_summary_table
 import re
 
 
@@ -57,49 +57,42 @@ def mediation_analysis_to_markdown_table(
             "$CI_{97.5}$": 2,
         }
 
-    # Convert the summary table to a DataFrame
+    # Get the summary df
     summary_df = mediation_result.copy()
 
-    # Rename the columns
-    summary_df = summary_df.rename(columns=column_rename_dict)
+    # Replace the index with the "path" column values
+    # for compatibility with general formatting function
+    summary_df.index = summary_df["path"]
+    # and drop the "path" column
+    summary_df = summary_df.drop(columns="path")
 
-    # Rename the predictors
-    # If we don't have a rename dict, tidy the predictor names slightly
-    if variable_rename_dict is None:
-        # Replace __ with space within rows of the "Path" column
-        summary_df["Path"] = summary_df["Path"].str.replace("__", " ")
-        # Replace _ with space
-        summary_df["Path"] = summary_df["Path"].str.replace("_", " ")
-        # Capitalize the first letter of each word
-        summary_df["Path"] = summary_df["Path"].str.title()
-    else:
-        # Otherwise, replace values according to the specified dictionary
-        for key, value in variable_rename_dict.items():
-            summary_df["Path"] = summary_df["Path"].str.replace(key, value)
+    # Process the summary table using the common function
+    summary_df = process_summary_table(
+        summary_df=summary_df,
+        predictor_rename_dict=variable_rename_dict,
+        exclude_predictors=[],
+        column_rename_dict=column_rename_dict,
+        round_dict=round_dict,
+    )
+
+    # Move current index values to a new column called "Path"
+    summary_df = summary_df.reset_index()
+    summary_df = summary_df.rename(columns={"path": "Path"})
 
     # Put variable names for indirect paths in brackets
     summary_df["Path"] = summary_df["Path"].apply(
         lambda x: re.sub(r"Indirect (.+)", r"Indirect (\1)", x)
     )
 
-    # Drop the "sig" column
-    summary_df = summary_df.drop(columns="sig")
-
-    # Remove columns that arne't needed from the rounding dict
-    round_dict = {
-        k: v for k, v in round_dict.items() if k in summary_df.columns
-    }
-
-    # Specify pval columns
-    pval_columns = {
-        "$p$": 0.05,
-    }
+    # Drop the "sig" column if it exists
+    if "sig" in summary_df.columns:
+        summary_df = summary_df.drop(columns="sig")
 
     # Convert to markdown table
     markdown_table = dataframe_to_markdown(
         summary_df,
         rename_dict={},
-        pval_columns=pval_columns,
+        pval_columns={"$p$": 0.05},
         round_dict=round_dict,
         rename_index=None,
     )

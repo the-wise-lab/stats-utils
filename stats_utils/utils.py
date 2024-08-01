@@ -1,5 +1,54 @@
-from typing import List, Dict
+from typing import List, Dict, Optional
 import pandas as pd
+
+
+def process_summary_table(
+    summary_df: pd.DataFrame,
+    predictor_rename_dict: Optional[Dict[str, str]] = None,
+    exclude_predictors: Optional[List[str]] = None,
+    column_rename_dict: Optional[Dict[str, str]] = None,
+    round_dict: Optional[Dict[str, int]] = None,
+) -> pd.DataFrame:
+    """
+    Process a summary table DataFrame by renaming columns, applying rounding,
+    and filtering predictors.
+
+    Args:
+        summary_df (pd.DataFrame): The summary table as a DataFrame.
+        predictor_rename_dict (Optional[Dict[str, str]], optional): A
+            dictionary to rename the predictors in the summary table. Defaults
+            to `None`.
+        exclude_predictors (Optional[List[str]], optional): A list of
+            predictors to exclude from the summary table. Defaults to `[]`.
+        column_rename_dict (Optional[Dict[str, str]], optional): A dictionary
+            to rename the summary table columns. Defaults to `None`.
+        round_dict (Optional[Dict[str, int]], optional): A dictionary to
+            set the rounding precision for each column. Defaults to `None`.
+
+    Returns:
+        pd.DataFrame: The processed summary table DataFrame.
+    """
+
+    # Rename the columns
+    if column_rename_dict is not None:
+        summary_df = summary_df.rename(columns=column_rename_dict)
+
+    # Rename the predictors
+    if predictor_rename_dict is None:
+        summary_df.index = summary_df.index.str.replace("__", " ")
+        summary_df.index = summary_df.index.str.replace("_", " ")
+        summary_df.index = summary_df.index.str.title()
+    else:
+        summary_df = summary_df.rename(index=predictor_rename_dict)
+
+    # Drop the intercept row
+    summary_df = summary_df.drop(index="Intercept", errors="ignore")
+
+    # Drop any excluded predictors
+    if exclude_predictors:
+        summary_df = summary_df.drop(index=exclude_predictors, errors="ignore")
+
+    return summary_df
 
 
 def format_column_repeated_values(
@@ -83,7 +132,7 @@ def dataframe_to_markdown(
     # Reset index just in case it's out of order
     df = df.reset_index()
 
-    # Rename the index column 
+    # Rename the index column
     if rename_index is not None:
         df = df.rename(columns={"index": rename_index})
     else:
@@ -95,6 +144,11 @@ def dataframe_to_markdown(
     # Get rounding precision for each column as a tuple in the column order, as
     # a formatting string
     precisions = tuple([f".{round_dict.get(col, 0)}f" for col in df.columns])
+
+    # Drop any columns that are not in the DataFrame
+    round_dict = {
+        col: round_dict[col] for col in round_dict if col in df.columns
+    }
 
     # Apply custom formatting based on round_dict
     for col, decimals in round_dict.items():
@@ -116,9 +170,7 @@ def dataframe_to_markdown(
         if col in pval_columns:
 
             # Replace 0.000 with "<0.001"
-            df[col] = df[col].apply(
-                lambda x: "<.001" if x == "0.000" else x
-            )
+            df[col] = df[col].apply(lambda x: "<.001" if x == "0.000" else x)
 
             # Bold significant rows
             df[col] = df.apply(
@@ -129,7 +181,6 @@ def dataframe_to_markdown(
                 ),
                 axis=1,
             )
-
 
     # Format columns with repeated values
     if repeated_value_columns is not None:

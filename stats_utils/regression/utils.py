@@ -9,7 +9,7 @@ from statsmodels.regression.linear_model import RegressionResultsWrapper
 
 from .analysis import add_bootstrap_methods_to_ols
 from .plotting import forest_plot
-from ..utils import dataframe_to_markdown
+from ..utils import dataframe_to_markdown, process_summary_table
 
 
 def run_regression_and_plot(
@@ -229,81 +229,38 @@ def ols_to_markdown_table(
     # Convert the summary table to a DataFrame
     summary_df = pd.DataFrame(ols_result.summary2().tables[1])
 
-    # Rename the columns
-    summary_df = summary_df.rename(columns=column_rename_dict)
-
     # Replace CIs and pvals with bootstrapped values if bootstrapping was used
     if use_bootstrapping:
-        # Check whether the model has model.pvalues_bootstrap attribute
         if hasattr(ols_result, "pvalues_bootstrap"):
-            # Replace p-values with bootstrapped values
-            summary_df["$p$"] = ols_result.pvalues_bootstrap
-            # Replace CI values with bootstrapped values
-            summary_df["$CI_{2.5}$"] = ols_result.conf_int()[0]
-            summary_df["$CI_{97.5}$"] = ols_result.conf_int()[1]
-            # Remove the t-values column
-            summary_df = summary_df.drop(columns="$t$")
+            summary_df["P>|t|"] = ols_result.pvalues_bootstrap
+            summary_df["[0.025"] = ols_result.conf_int()[0]
+            summary_df["0.975]"] = ols_result.conf_int()[1]
+            summary_df = summary_df.drop(columns="t")
         else:
             print(
-                "OLS model does not have pvalues_bootstrap attribute. "
+                "OLS model does not have bootstrapped samples. "
                 "Using original values."
             )
 
-    # Rename the predictors
-    # If we don't have a rename dict, tidy the predictor names slightly
-    if predictor_rename_dict is None:
-        # Replace __ with space
-        summary_df.index = summary_df.index.str.replace("__", " ")
-        # Replace _ with space
-        summary_df.index = summary_df.index.str.replace("_", " ")
-        # Capitalize the first letter of each word
-        summary_df.index = summary_df.index.str.title()
-    else:
-        # Rename the predictors using the provided dictionary
-        summary_df = summary_df.rename(index=predictor_rename_dict)
-
-    # Drop the intercept row
-    summary_df = summary_df.drop(index="Intercept")
-
-    # Drop any excluded predictors
-    summary_df = summary_df.drop(index=exclude_predictors, errors="ignore")
+    # Process the summary table
+    summary_df = process_summary_table(
+        summary_df,
+        predictor_rename_dict=predictor_rename_dict,
+        exclude_predictors=exclude_predictors,
+        column_rename_dict=column_rename_dict,
+        round_dict=round_dict,
+    )
 
     # Correct p-values for multiple comparisons
     if alpha_corr is not None:
         summary_df["$p_{corr}$"] = summary_df["$p$"] * (0.05 / alpha_corr)
-        # Make sure values don't go above 1
         summary_df["$p_{corr}$"] = summary_df["$p_{corr}$"].clip(upper=1)
-        # Put the corrected p-value column next to the original p-value column
-        correct_col_order = [
-            "$\\beta$",
-            "$\\beta_{SE}$",
-            "$t$",
-            "$p$",
-            "$p_{corr}$",
-            "$CI_{2.5}$",
-            "$CI_{97.5}$",
-        ]
-        # Reorder the columns, if each column is in the dataframe
-        summary_df = summary_df[
-            [col for col in correct_col_order if col in summary_df.columns]
-        ]
-
-    # Remove columns that arne't needed from the rounding dict
-    round_dict = {
-        k: v for k, v in round_dict.items() if k in summary_df.columns
-    }
-
-    # Specify pval columns
-    pval_columns = {
-        "$p$": 0.05,
-        "$p_{corr}$": 0.05,
-    }
 
     # Convert to markdown table
     markdown_table = dataframe_to_markdown(
         summary_df,
         rename_dict={},
-        pval_columns=pval_columns,
+        pval_columns={"$p$": 0.05, "$p_{corr}$": 0.05},
         round_dict=round_dict,
     )
 
