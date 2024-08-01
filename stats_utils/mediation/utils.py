@@ -73,7 +73,8 @@ def mediation_analysis_to_markdown_table(
         summary_df["Path"] = summary_df["Path"].str.title()
     else:
         # Otherwise, replace values according to the specified dictionary
-        summary_df["Path"] = summary_df["Path"].map(variable_rename_dict)
+        for key, value in variable_rename_dict.items():
+            summary_df["Path"] = summary_df["Path"].str.replace(key, value)
 
     # Drop the "sig" column
     summary_df = summary_df.drop(columns="sig")
