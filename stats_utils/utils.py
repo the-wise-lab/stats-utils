@@ -160,6 +160,10 @@ def dataframe_to_markdown(
             'p>|t|')
     """
 
+    # Set pval columns to an empty dictionary if not provided
+    if pval_columns is None:
+        pval_columns = {}
+
     # If HDI columns are specified, ensure there are two columns
     if hdi_columns is not None and len(hdi_columns) != 2:
         raise ValueError("hdi_columns must contain two columns")
