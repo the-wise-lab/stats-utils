@@ -255,7 +255,7 @@ def forest_plot(
             # Add the star
             ax.text(
                 i,
-                coef + errors_upper[i],
+                coef + errors_upper.iloc[i],
                 star_string,
                 ha="center",
                 va="bottom",
