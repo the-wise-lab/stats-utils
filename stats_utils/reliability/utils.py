@@ -98,6 +98,7 @@ def icc_to_markdown_table(
         rename_dict={},
         pval_columns=None,
         round_dict=round_dict,
+        rename_index='Variable'
     )
 
     return markdown_table
