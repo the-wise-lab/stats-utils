@@ -1,6 +1,7 @@
 import pandas as pd
 from typing import Dict, Optional
 from ..utils import dataframe_to_markdown
+import re
 
 
 def mediation_analysis_to_markdown_table(
@@ -77,10 +78,8 @@ def mediation_analysis_to_markdown_table(
             summary_df["Path"] = summary_df["Path"].str.replace(key, value)
 
     # Put variable names for indirect paths in brackets
-    summary_df['Path'] = summary_df['Path'].str.replace(
-        r"Indirect (\w+)", 
-        lambda match: f"Indirect ({match.group(1)})",
-        regex=True
+    summary_df["Path"] = summary_df["Path"].apply(
+        lambda x: re.sub(r"Indirect (.+)", r"Indirect (\1)", x)
     )
 
     # Drop the "sig" column
@@ -102,7 +101,7 @@ def mediation_analysis_to_markdown_table(
         rename_dict={},
         pval_columns=pval_columns,
         round_dict=round_dict,
-        rename_index=None
+        rename_index=None,
     )
 
     return markdown_table
