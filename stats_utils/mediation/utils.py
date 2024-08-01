@@ -76,6 +76,13 @@ def mediation_analysis_to_markdown_table(
         for key, value in variable_rename_dict.items():
             summary_df["Path"] = summary_df["Path"].str.replace(key, value)
 
+    # Put variable names for indirect paths in brackets
+    summary_df['Path'] = summary_df['Path'].str.replace(
+        r"Indirect (\w+)", 
+        lambda match: f"Indirect ({match.group(1)})",
+        regex=True
+    )
+
     # Drop the "sig" column
     summary_df = summary_df.drop(columns="sig")
 
