@@ -1,4 +1,5 @@
 from typing import List, Dict, Optional
+import numpy as np
 import pandas as pd
 
 
@@ -80,11 +81,39 @@ def format_column_repeated_values(
     return formatted_df
 
 
+# Function to apply bold formatting to specified HDI columns where both values
+# have the same sign
+def bold_hdi_values(row: dict, hdi_lower_col: str, hdi_upper_col: str) -> dict:
+    """
+    Formats the lower and upper values of a row's HDI (Highest Density
+    Interval) with double asterisks if they have the same sign.
+
+    Args:
+        row: A dictionary representing a row of data.
+        hdi_lower_col: The column name for the lower HDI value.
+        hdi_upper_col: The column name for the upper HDI value.
+
+    Returns:
+        The modified row dictionary with the HDI values formatted with double
+        asterisks if they have the same sign.
+    """
+    hdi_lower = float(row[hdi_lower_col])
+    hdi_upper = float(row[hdi_upper_col])
+
+    # Check if both HDI values have the same sign
+    if np.sign(hdi_lower) == np.sign(hdi_upper):
+        row[hdi_lower_col] = f"**{row[hdi_lower_col]}**"
+        row[hdi_upper_col] = f"**{row[hdi_upper_col]}**"
+
+    return row
+
+
 def dataframe_to_markdown(
     df: pd.DataFrame,
     round_dict: dict,
     rename_dict: dict,
     pval_columns: Dict[str, float] = None,
+    hdi_columns: List[str] = None,
     repeated_value_columns: List[str] = None,
     rename_index: str = "Predictor",
 ) -> str:
@@ -105,6 +134,11 @@ def dataframe_to_markdown(
             significance level for each p-value column. If specified, the
             column will be converted to a string and significant values will
             be bolded. Example: `{"pval": 0.05, "pval_corr": 0.01}`
+        hdi_columns (List[str]): A list of column names representing
+            highest density intervals (HDIs) that should be highlighted
+            to show "significant" values. Should have two entries
+            where the first corresponds to the lower HDI and the second
+            corresponds to the upper HDI. Defaults to `[]`.
         repeated_value_columns (List[str]): A list of column names that
             should be formatted to show repeated values. For example, if we
             have multiple target variables and the same predictor variables,
@@ -125,6 +159,10 @@ def dataframe_to_markdown(
         markdown_str = dataframe_to_latex(df, round_dict, rename_dict,
             'p>|t|')
     """
+
+    # If HDI columns are specified, ensure there are two columns
+    if hdi_columns is not None and len(hdi_columns) != 2:
+        raise ValueError("hdi_columns must contain two columns")
 
     # Create a copy of the DataFrame
     df = df.copy()
@@ -181,6 +219,16 @@ def dataframe_to_markdown(
                 ),
                 axis=1,
             )
+
+    # Highlight "significant" HDI columns based on both
+    # values having the same sign
+    if hdi_columns is not None:
+        df = df.apply(
+            bold_hdi_values,
+            axis=1,
+            hdi_lower_col=hdi_columns[0],
+            hdi_upper_col=hdi_columns[1],
+        )
 
     # Format columns with repeated values
     if repeated_value_columns is not None:
