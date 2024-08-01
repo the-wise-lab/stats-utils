@@ -12,6 +12,7 @@ def arviz_to_markdown_table(
     column_rename_dict: Optional[Dict[str, str]] = None,
     round_dict: Optional[Dict[str, int]] = None,
     credible_interval: float = 0.95,
+    var_names: Optional[List[str]] = None,
 ) -> str:
     """
     Convert the summary table of a Bayesian regression result from ArviZ to
@@ -52,6 +53,11 @@ def arviz_to_markdown_table(
             The credible interval range to be used, expressed as a proportion
             (e.g., 0.95 for a 95% credible interval). This will determine the
             bounds used in the summary table. Defaults to `0.95`.
+        var_names (Optional[List[str]], optional):
+            A list of variable names to include in the summary table. If
+            provided, only these variables will be included in the table. If
+            not provided, all variables will be included. Defaults to `None`.
+
 
     Returns:
         str:
@@ -107,7 +113,9 @@ def arviz_to_markdown_table(
         }
 
     # Convert the summary to a DataFrame
-    summary_df = az.summary(az_result, hdi_prob=credible_interval)
+    summary_df = az.summary(
+        az_result, hdi_prob=credible_interval, var_names=var_names
+    )
 
     # Drop diagnostic columns
     summary_df = summary_df.drop(
