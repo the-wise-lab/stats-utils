@@ -1,0 +1,2113 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../analysis/">
+      
+      
+        <link rel="next" href="../utils/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.17">
+    
+    
+      
+        <title>Plotting - Stats utils documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.bcfcd587.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../../css/mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#plotting" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Stats utils documentation" class="md-header__button md-logo" aria-label="Stats utils documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Stats utils documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Plotting
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 2c-1.82 0-3.53.5-5 1.35C8 5.08 10 8.3 10 12s-2 6.92-5 8.65C6.47 21.5 8.18 22 10 22a10 10 0 0 0 10-10A10 10 0 0 0 10 2Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/the-wise-lab/stats-utils" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    the-wise-lab/stats-utils
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Stats utils documentation" class="md-nav__button md-logo" aria-label="Stats utils documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Stats utils documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/the-wise-lab/stats-utils" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    the-wise-lab/stats-utils
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Documentation for the stats utils package
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../utils/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Utils
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Bayesian
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Bayesian
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bayesian/plotting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Plotting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bayesian/utils/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Utils
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Efa
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Efa
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../efa/plotting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Plotting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Mediation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            Mediation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mediation/utils/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Utils
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Regression
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            Regression
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../analysis/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Analysis
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Plotting
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Plotting
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-module"></code>&nbsp;plotting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" plotting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.forest_plot" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;forest_plot
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" forest_plot">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.forest_plot(model)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.forest_plot(alpha)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;alpha
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.forest_plot(ax)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;ax
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.forest_plot(rename_dict)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;rename_dict
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.forest_plot(capitalise_vars)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;capitalise_vars
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.forest_plot(show_xlabel)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;show_xlabel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.forest_plot(show_ylabel)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;show_ylabel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.forest_plot(exclude_param_names)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;exclude_param_names
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.forest_plot(significance_thresholds)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;significance_thresholds
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.plot_r2s" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;plot_r2s
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" plot_r2s">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.plot_r2s(model_output)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;model_output
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.plot_r2s(save_path)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;save_path
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.plot_r2s(ax)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;ax
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.plot_r2s(show_ylabel)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;show_ylabel
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../utils/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Utils
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Reliability
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            Reliability
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reliability/icc/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ICC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reliability/utils/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Utils
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Stats
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            Stats
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stats/plotting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Plotting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-module"></code>&nbsp;plotting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" plotting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.forest_plot" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;forest_plot
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" forest_plot">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.forest_plot(model)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.forest_plot(alpha)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;alpha
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.forest_plot(ax)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;ax
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.forest_plot(rename_dict)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;rename_dict
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.forest_plot(capitalise_vars)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;capitalise_vars
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.forest_plot(show_xlabel)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;show_xlabel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.forest_plot(show_ylabel)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;show_ylabel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.forest_plot(exclude_param_names)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;exclude_param_names
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.forest_plot(significance_thresholds)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;significance_thresholds
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.plot_r2s" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;plot_r2s
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" plot_r2s">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.plot_r2s(model_output)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;model_output
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.plot_r2s(save_path)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;save_path
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.plot_r2s(ax)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;ax
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.plotting.plot_r2s(show_ylabel)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;show_ylabel
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="plotting">Plotting</h1>
+<p>This module contains functions for plotting results from regression models.</p>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="stats_utils.regression.plotting" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">plotting</span>
+
+
+</h2>
+
+    <div class="doc doc-contents first">
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="stats_utils.regression.plotting.forest_plot" href="#stats_utils.regression.plotting.forest_plot">forest_plot</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Creates a forest plot of the betas with 95% confidence intervals and</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="stats_utils.regression.plotting.plot_r2s" href="#stats_utils.regression.plotting.plot_r2s">plot_r2s</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Function to plot the adjusted r2s for each model fit in a sequential</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="stats_utils.regression.plotting.forest_plot" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">forest_plot</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">forest_plot</span><span class="p">(</span><span class="n"><a class="autorefs autorefs-internal" href="#stats_utils.regression.plotting.forest_plot(model)">model</a></span><span class="p">:</span> <span class="n"><span title="statsmodels.regression.linear_model.RegressionResultsWrapper">RegressionResultsWrapper</span></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#stats_utils.regression.plotting.forest_plot(alpha)">alpha</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#stats_utils.regression.plotting.forest_plot(ax)">ax</a></span><span class="p">:</span> <span class="n"><span title="matplotlib.pyplot.Axes">Axes</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#stats_utils.regression.plotting.forest_plot(rename_dict)">rename_dict</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#stats_utils.regression.plotting.forest_plot(capitalise_vars)">capitalise_vars</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#stats_utils.regression.plotting.forest_plot(show_xlabel)">show_xlabel</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#stats_utils.regression.plotting.forest_plot(show_ylabel)">show_ylabel</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#stats_utils.regression.plotting.forest_plot(exclude_param_names)">exclude_param_names</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#stats_utils.regression.plotting.forest_plot(significance_thresholds)">significance_thresholds</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Dict" href="https://docs.python.org/3/library/typing.html#typing.Dict">Dict</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mf">0.05</span><span class="p">:</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">:</span> <span class="s1">&#39;**&#39;</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">:</span> <span class="s1">&#39;***&#39;</span><span class="p">})</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Creates a forest plot of the betas with 95% confidence intervals and
+significance stars.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<h4 id="stats_utils.regression.plotting.forest_plot(model)" class="doc doc-heading doc-heading-parameter">              <b><code>model</code></b>
+</h4>              (<code><span title="statsmodels.regression.linear_model.RegressionResultsWrapper">RegressionResultsWrapper</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>A fitted regression model from
+statsmodels.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+<h4 id="stats_utils.regression.plotting.forest_plot(alpha)" class="doc doc-heading doc-heading-parameter">              <b><code>alpha</code></b>
+</h4>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></code>, default:
+                  <code>0.05</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>The significance level for the confidence
+intervals and significance stars. Defaults to <code>0.05</code>.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+<h4 id="stats_utils.regression.plotting.forest_plot(ax)" class="doc doc-heading doc-heading-parameter">              <b><code>ax</code></b>
+</h4>              (<code><span title="matplotlib.pyplot.Axes">Axes</span></code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>The axes to plot on. If <code>None</code>, a new figure
+and axes will be created. Defaults to <code>None</code>.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+<h4 id="stats_utils.regression.plotting.forest_plot(rename_dict)" class="doc doc-heading doc-heading-parameter">              <b><code>rename_dict</code></b>
+</h4>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>A dictionary of variable names to rename.
+Defaults to <code>None</code>.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+<h4 id="stats_utils.regression.plotting.forest_plot(capitalise_vars)" class="doc doc-heading doc-heading-parameter">              <b><code>capitalise_vars</code></b>
+</h4>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>, default:
+                  <code>True</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Whether to capitalise the variable
+names. Defaults to <code>True</code>.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+<h4 id="stats_utils.regression.plotting.forest_plot(show_xlabel)" class="doc doc-heading doc-heading-parameter">              <b><code>show_xlabel</code></b>
+</h4>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>, default:
+                  <code>True</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Whether to show the x label. Defaults
+to <code>True</code>.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+<h4 id="stats_utils.regression.plotting.forest_plot(show_ylabel)" class="doc doc-heading doc-heading-parameter">              <b><code>show_ylabel</code></b>
+</h4>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>, default:
+                  <code>True</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Whether to show the y label. Defaults
+to <code>True</code>.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+<h4 id="stats_utils.regression.plotting.forest_plot(exclude_param_names)" class="doc doc-heading doc-heading-parameter">              <b><code>exclude_param_names</code></b>
+</h4>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>A list of parameter names to
+exclude from the plot. Defaults to <code>None</code>.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+<h4 id="stats_utils.regression.plotting.forest_plot(significance_thresholds)" class="doc doc-heading doc-heading-parameter">              <b><code>significance_thresholds</code></b>
+</h4>              (<code><a class="autorefs autorefs-external" title="typing.Dict" href="https://docs.python.org/3/library/typing.html#typing.Dict">Dict</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>, <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</code>, default:
+                  <code>{0.05: &#39;*&#39;, 0.01: &#39;**&#39;, 0.001: &#39;***&#39;}</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>A dictionary of
+significance thresholds and the corresponding significance stars.
+Defaults to <code>{0.05: "*", 0.01: "**", 0.001: "***"}</code>.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<b><code>None</code></b> (              <code>None</code>
+)          –
+          <div class="doc-md-description">
+            <p>The function does not return any value. It displays the forest
+plot using Matplotlib.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <pre><code class="language-python">import statsmodels.api as sm
+from stats_utils.regression import forest_plot
+
+# Load the data
+data = sm.datasets.get_rdataset(&quot;mtcars&quot;, &quot;datasets&quot;).data
+
+# Fit a linear regression model
+model = sm.OLS(data[&quot;mpg&quot;], sm.add_constant(data[&quot;wt&quot;])).fit()
+
+# Create a forest plot
+forest_plot(model)
+</code></pre>
+
+            <details class="quote">
+              <summary>Source code in <code>stats_utils/regression/plotting.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">forest_plot</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">:</span> <span class="n">RegressionResultsWrapper</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">ax</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">rename_dict</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">capitalise_vars</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">show_xlabel</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">show_ylabel</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">exclude_param_names</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">significance_thresholds</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="mf">0.05</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+        <span class="mf">0.01</span><span class="p">:</span> <span class="s2">&quot;**&quot;</span><span class="p">,</span>
+        <span class="mf">0.001</span><span class="p">:</span> <span class="s2">&quot;***&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a forest plot of the betas with 95% confidence intervals and</span>
+<span class="sd">    significance stars.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        model (RegressionResultsWrapper): A fitted regression model from</span>
+<span class="sd">            statsmodels.</span>
+<span class="sd">        alpha (float, optional): The significance level for the confidence</span>
+<span class="sd">            intervals and significance stars. Defaults to `0.05`.</span>
+<span class="sd">        ax (plt.Axes, optional): The axes to plot on. If `None`, a new figure</span>
+<span class="sd">            and axes will be created. Defaults to `None`.</span>
+<span class="sd">        rename_dict (dict, optional): A dictionary of variable names to rename.</span>
+<span class="sd">            Defaults to `None`.</span>
+<span class="sd">        capitalise_vars (bool, optional): Whether to capitalise the variable</span>
+<span class="sd">            names. Defaults to `True`.</span>
+<span class="sd">        show_xlabel (bool, optional): Whether to show the x label. Defaults</span>
+<span class="sd">            to `True`.</span>
+<span class="sd">        show_ylabel (bool, optional): Whether to show the y label. Defaults</span>
+<span class="sd">            to `True`.</span>
+<span class="sd">        exclude_param_names (list, optional): A list of parameter names to</span>
+<span class="sd">            exclude from the plot. Defaults to `None`.</span>
+<span class="sd">        significance_thresholds (Dict[float, str], optional): A dictionary of</span>
+<span class="sd">            significance thresholds and the corresponding significance stars.</span>
+<span class="sd">            Defaults to `{0.05: &quot;*&quot;, 0.01: &quot;**&quot;, 0.001: &quot;***&quot;}`.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None: The function does not return any value. It displays the forest</span>
+<span class="sd">            plot using Matplotlib.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        ```python</span>
+<span class="sd">        import statsmodels.api as sm</span>
+<span class="sd">        from stats_utils.regression import forest_plot</span>
+
+<span class="sd">        # Load the data</span>
+<span class="sd">        data = sm.datasets.get_rdataset(&quot;mtcars&quot;, &quot;datasets&quot;).data</span>
+
+<span class="sd">        # Fit a linear regression model</span>
+<span class="sd">        model = sm.OLS(data[&quot;mpg&quot;], sm.add_constant(data[&quot;wt&quot;])).fit()</span>
+
+<span class="sd">        # Create a forest plot</span>
+<span class="sd">        forest_plot(model)</span>
+<span class="sd">        ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Get default colours</span>
+    <span class="n">default_colors</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;axes.prop_cycle&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">by_key</span><span class="p">()[</span><span class="s2">&quot;color&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Get boolean array of which parameters to exclude</span>
+    <span class="k">if</span> <span class="n">exclude_param_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">exclude_param_names</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">include</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="n">param_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude_param_names</span>
+            <span class="k">for</span> <span class="n">param_name</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Get the coefficients and their standard errors</span>
+    <span class="n">coefs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">:][</span><span class="n">include</span><span class="p">]</span>
+    <span class="c1"># conf_intervals = model.conf_int(alpha=alpha)[1:]</span>
+    <span class="n">conf_intervals</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">conf_int_bootstrap</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="n">lower_bounds</span> <span class="o">=</span> <span class="n">conf_intervals</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">include</span><span class="p">]</span>
+    <span class="n">upper_bounds</span> <span class="o">=</span> <span class="n">conf_intervals</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">include</span><span class="p">]</span>
+    <span class="n">p_values</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">pvalues_bootstrap</span><span class="p">[</span><span class="mi">1</span><span class="p">:][</span><span class="n">include</span><span class="p">]</span>
+
+    <span class="c1"># Calculate the errors (distance from the coefficient to the bounds)</span>
+    <span class="n">errors_upper</span> <span class="o">=</span> <span class="n">upper_bounds</span> <span class="o">-</span> <span class="n">coefs</span>
+    <span class="n">errors_lower</span> <span class="o">=</span> <span class="n">coefs</span> <span class="o">-</span> <span class="n">lower_bounds</span>
+
+    <span class="c1"># Number of coefficients</span>
+    <span class="n">n_coef</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">coefs</span><span class="p">)</span>
+
+    <span class="c1"># Set up the plot</span>
+    <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">n_coef</span> <span class="o">*</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">))</span>
+
+    <span class="c1"># Determine the colour of each point based on the p-value</span>
+    <span class="n">colours</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">default_colors</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">p_value</span> <span class="o">&lt;</span> <span class="n">alpha</span> <span class="k">else</span> <span class="n">default_colors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">p_value</span> <span class="ow">in</span> <span class="n">p_values</span>
+    <span class="p">]</span>
+
+    <span class="c1"># Plot the coefficients</span>
+    <span class="c1"># Errorbars first</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_coef</span><span class="p">),</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">coefs</span><span class="p">,</span>
+        <span class="n">yerr</span><span class="o">=</span><span class="p">[</span><span class="n">errors_lower</span><span class="p">,</span> <span class="n">errors_upper</span><span class="p">],</span>
+        <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span>
+        <span class="n">capsize</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">capthick</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">ecolor</span><span class="o">=</span><span class="n">colours</span><span class="p">,</span>
+        <span class="n">zorder</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Then the points</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_coef</span><span class="p">),</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">coefs</span><span class="p">,</span>
+        <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+        <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">colours</span><span class="p">,</span>
+        <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+        <span class="n">linewidths</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Add significance stars</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">coef</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">p_value</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">coefs</span><span class="p">,</span> <span class="n">errors_upper</span><span class="p">,</span> <span class="n">p_values</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">p_value</span> <span class="o">&lt;</span> <span class="n">alpha</span><span class="p">:</span>
+            <span class="c1"># Get the significance star string</span>
+            <span class="n">star_string</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="c1"># Start from the highest threshold</span>
+            <span class="k">for</span> <span class="n">threshold</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span>
+                <span class="n">significance_thresholds</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">):</span>
+                <span class="c1"># If the p-value is lower than the threshold, add the</span>
+                <span class="c1"># corresponding significance star</span>
+                <span class="k">if</span> <span class="n">p_value</span> <span class="o">&lt;</span> <span class="n">threshold</span><span class="p">:</span>
+                    <span class="n">star_string</span> <span class="o">=</span> <span class="n">significance_thresholds</span><span class="p">[</span><span class="n">threshold</span><span class="p">]</span>
+            <span class="c1"># Add the star</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+                <span class="n">i</span><span class="p">,</span>
+                <span class="n">coef</span> <span class="o">+</span> <span class="n">errors_upper</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">star_string</span><span class="p">,</span>
+                <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                <span class="n">va</span><span class="o">=</span><span class="s2">&quot;bottom&quot;</span><span class="p">,</span>
+                <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#292929&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="c1"># Rename the variables</span>
+    <span class="k">if</span> <span class="n">rename_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">var_names</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">rename_dict</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="k">if</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">rename_dict</span> <span class="k">else</span> <span class="n">var</span>
+            <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">coefs</span><span class="o">.</span><span class="n">index</span>
+        <span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">var_names</span> <span class="o">=</span> <span class="n">coefs</span><span class="o">.</span><span class="n">index</span>
+
+    <span class="c1"># Capitalise the variable names</span>
+    <span class="k">if</span> <span class="n">capitalise_vars</span><span class="p">:</span>
+        <span class="n">var_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">var</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="n">var</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">var_names</span><span class="p">]</span>
+
+    <span class="c1"># Set the x-ticks and their labels</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_coef</span><span class="p">),</span> <span class="n">var_names</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+
+    <span class="c1"># make axis tick font regular weight</span>
+    <span class="k">for</span> <span class="n">tick</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">get_major_ticks</span><span class="p">():</span>
+        <span class="n">tick</span><span class="o">.</span><span class="n">label1</span><span class="o">.</span><span class="n">set_fontweight</span><span class="p">(</span><span class="s2">&quot;regular&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">tick</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">get_major_ticks</span><span class="p">():</span>
+        <span class="n">tick</span><span class="o">.</span><span class="n">label1</span><span class="o">.</span><span class="n">set_fontweight</span><span class="p">(</span><span class="s2">&quot;regular&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Add a horizontal line at y=0</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Set the plot&#39;s title, xlabel, and ylabel</span>
+    <span class="k">if</span> <span class="n">show_xlabel</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Variable&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">show_ylabel</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\beta$ (+/- SE)&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Adjust Y-axis limits</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span>
+        <span class="nb">min</span><span class="p">(</span><span class="n">lower_bounds</span><span class="p">)</span> <span class="o">-</span> <span class="nb">max</span><span class="p">(</span><span class="n">errors_lower</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="nb">max</span><span class="p">(</span><span class="n">upper_bounds</span><span class="p">)</span> <span class="o">+</span> <span class="nb">max</span><span class="p">(</span><span class="n">errors_upper</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Set the x-axis limits</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">n_coef</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span>
+
+    <span class="c1"># Remove the top and right spines</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="stats_utils.regression.plotting.plot_r2s" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">plot_r2s</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">plot_r2s</span><span class="p">(</span><span class="n"><a class="autorefs autorefs-internal" href="#stats_utils.regression.plotting.plot_r2s(model_output)">model_output</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="stats_utils.regression.analysis.ModelOutput" href="../analysis/#stats_utils.regression.analysis.ModelOutput">ModelOutput</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#stats_utils.regression.plotting.plot_r2s(save_path)">save_path</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Union" href="https://docs.python.org/3/library/typing.html#typing.Union">Union</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#stats_utils.regression.plotting.plot_r2s(ax)">ax</a></span><span class="p">:</span> <span class="n"><span title="matplotlib.pyplot.Axes">Axes</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#stats_utils.regression.plotting.plot_r2s(show_ylabel)">show_ylabel</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Function to plot the adjusted r2s for each model fit in a sequential
+regression.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<h4 id="stats_utils.regression.plotting.plot_r2s(model_output)" class="doc doc-heading doc-heading-parameter">              <b><code>model_output</code></b>
+</h4>              (<code><a class="autorefs autorefs-internal" title="stats_utils.regression.analysis.ModelOutput" href="../analysis/#stats_utils.regression.analysis.ModelOutput">ModelOutput</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Model output from sequential_regression
+function.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+<h4 id="stats_utils.regression.plotting.plot_r2s(save_path)" class="doc doc-heading doc-heading-parameter">              <b><code>save_path</code></b>
+</h4>              (<code><a class="autorefs autorefs-external" title="typing.Union" href="https://docs.python.org/3/library/typing.html#typing.Union">Union</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>, None]</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Path to save figure to.
+Defaults to <code>None</code>.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+<h4 id="stats_utils.regression.plotting.plot_r2s(ax)" class="doc doc-heading doc-heading-parameter">              <b><code>ax</code></b>
+</h4>              (<code><span title="matplotlib.pyplot.Axes">Axes</span></code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Axis to plot on. If <code>None</code>, will create a new
+figure. Defaults to <code>None</code>.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+<h4 id="stats_utils.regression.plotting.plot_r2s(show_ylabel)" class="doc doc-heading doc-heading-parameter">              <b><code>show_ylabel</code></b>
+</h4>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>, default:
+                  <code>True</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Whether to show the y label. Defaults
+to <code>True</code>.</p>
+          </div>
+        </li>
+    </ul>
+
+            <details class="quote">
+              <summary>Source code in <code>stats_utils/regression/plotting.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 13</span>
+<span class="normal"> 14</span>
+<span class="normal"> 15</span>
+<span class="normal"> 16</span>
+<span class="normal"> 17</span>
+<span class="normal"> 18</span>
+<span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_r2s</span><span class="p">(</span>
+    <span class="n">model_output</span><span class="p">:</span> <span class="n">ModelOutput</span><span class="p">,</span>
+    <span class="n">save_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">ax</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">show_ylabel</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to plot the adjusted r2s for each model fit in a sequential</span>
+<span class="sd">    regression.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        model_output (ModelOutput): Model output from sequential_regression</span>
+<span class="sd">            function.</span>
+<span class="sd">        save_path (Union[str, None], optional): Path to save figure to.</span>
+<span class="sd">            Defaults to `None`.</span>
+<span class="sd">        ax (plt.Axes, optional): Axis to plot on. If `None`, will create a new</span>
+<span class="sd">            figure. Defaults to `None`.</span>
+<span class="sd">        show_ylabel (bool, optional): Whether to show the y label. Defaults</span>
+<span class="sd">            to `True`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">cmap_colours</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#FF00AA&quot;</span><span class="p">,</span> <span class="s2">&quot;#B123C4&quot;</span><span class="p">,</span> <span class="s2">&quot;#0074FF&quot;</span><span class="p">]</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="s2">&quot;custom_cmap&quot;</span><span class="p">,</span> <span class="n">cmap_colours</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">2.4</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">))</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">model_output</span><span class="o">.</span><span class="n">n_solutions</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">model_output</span><span class="o">.</span><span class="n">r2s</span>
+
+    <span class="c1"># interpolate x and y</span>
+    <span class="n">x_interp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">model_output</span><span class="o">.</span><span class="n">n_solutions</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">y_interp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span>
+        <span class="n">x_interp</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">model_output</span><span class="o">.</span><span class="n">n_solutions</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">model_output</span><span class="o">.</span><span class="n">r2s</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Create a set of points (x, y) as a 2D array</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x_interp</span><span class="p">,</span> <span class="n">y_interp</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># Create a set of segments as a 3D array</span>
+    <span class="n">segments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">points</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">:]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Create a normalized color map for the line gradient</span>
+    <span class="n">norm</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">x_interp</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">x_interp</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+
+    <span class="c1"># Create a LineCollection with the segments and colors</span>
+    <span class="n">lc</span> <span class="o">=</span> <span class="n">LineCollection</span><span class="p">(</span><span class="n">segments</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">cmap</span><span class="p">(</span><span class="n">norm</span><span class="p">(</span><span class="n">x_interp</span><span class="p">)),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+    <span class="c1"># ax.plot(model_outputs[&#39;p_correct&#39;].r2s, &#39;o-&#39;)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">cmap</span><span class="p">(</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span> <span class="n">s</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+
+    <span class="c1"># Add the LineCollection to the axis</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">lc</span><span class="p">)</span>
+
+    <span class="c1"># ax.set_title(p.replace(&#39;_&#39;, &#39; &#39;))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">model_output</span><span class="o">.</span><span class="n">y_var</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Number of factors&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">show_ylabel</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Adjusted $R^2$&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Add significance stars</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">model_output</span><span class="o">.</span><span class="n">n_solutions</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">model_output</span><span class="o">.</span><span class="n">anova_results</span><span class="p">[</span><span class="s2">&quot;Pr(&gt;F)&quot;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.05</span><span class="p">:</span>
+            <span class="n">star_string</span> <span class="o">=</span> <span class="s2">&quot;*&quot;</span>
+            <span class="k">if</span> <span class="n">model_output</span><span class="o">.</span><span class="n">anova_results</span><span class="p">[</span><span class="s2">&quot;Pr(&gt;F)&quot;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.01</span><span class="p">:</span>
+                <span class="n">star_string</span> <span class="o">=</span> <span class="s2">&quot;**&quot;</span>
+            <span class="k">if</span> <span class="n">model_output</span><span class="o">.</span><span class="n">anova_results</span><span class="p">[</span><span class="s2">&quot;Pr(&gt;F)&quot;</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.001</span><span class="p">:</span>
+                <span class="n">star_string</span> <span class="o">=</span> <span class="s2">&quot;***&quot;</span>
+            <span class="n">ypos</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+                <span class="n">j</span> <span class="o">-</span> <span class="mf">0.1</span><span class="p">,</span>
+                <span class="n">ypos</span><span class="p">,</span>
+                <span class="n">star_string</span><span class="p">,</span>
+                <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+                <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;regular&quot;</span><span class="p">,</span>
+                <span class="n">horizontalalignment</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#292929&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="c1"># set x tick labels to be integers from 0 to n_solutions</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">model_output</span><span class="o">.</span><span class="n">n_solutions</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="c1"># make axis tick font regular weight</span>
+    <span class="k">for</span> <span class="n">tick</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">get_major_ticks</span><span class="p">():</span>
+        <span class="n">tick</span><span class="o">.</span><span class="n">label1</span><span class="o">.</span><span class="n">set_fontweight</span><span class="p">(</span><span class="s2">&quot;regular&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">tick</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">get_major_ticks</span><span class="p">():</span>
+        <span class="n">tick</span><span class="o">.</span><span class="n">label1</span><span class="o">.</span><span class="n">set_fontweight</span><span class="p">(</span><span class="s2">&quot;regular&quot;</span><span class="p">)</span>
+
+    <span class="c1"># extend y lim</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="mf">0.3</span><span class="p">,</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">model_output</span><span class="o">.</span><span class="n">n_solutions</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">save_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.1e8ae164.min.js"></script>
+      
+    
+  </body>
+</html>

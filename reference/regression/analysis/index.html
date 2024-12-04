@@ -1,0 +1,1818 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../../mediation/utils/">
+      
+      
+        <link rel="next" href="../plotting/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.17">
+    
+    
+      
+        <title>Analysis - Stats utils documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.bcfcd587.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../../css/mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#analysis" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Stats utils documentation" class="md-header__button md-logo" aria-label="Stats utils documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Stats utils documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Analysis
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 2c-1.82 0-3.53.5-5 1.35C8 5.08 10 8.3 10 12s-2 6.92-5 8.65C6.47 21.5 8.18 22 10 22a10 10 0 0 0 10-10A10 10 0 0 0 10 2Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/the-wise-lab/stats-utils" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    the-wise-lab/stats-utils
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Stats utils documentation" class="md-nav__button md-logo" aria-label="Stats utils documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Stats utils documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/the-wise-lab/stats-utils" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    the-wise-lab/stats-utils
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Documentation for the stats utils package
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../utils/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Utils
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Bayesian
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Bayesian
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bayesian/plotting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Plotting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bayesian/utils/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Utils
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Efa
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Efa
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../efa/plotting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Plotting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Mediation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            Mediation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mediation/utils/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Utils
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Regression
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            Regression
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Analysis
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Analysis
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#stats_utils.regression.analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-module"></code>&nbsp;analysis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.analysis.ModelOutput" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;ModelOutput
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.analysis.add_bootstrap_methods_to_ols" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;add_bootstrap_methods_to_ols
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" add_bootstrap_methods_to_ols">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.analysis.add_bootstrap_methods_to_ols(results)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;results
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.analysis.sequential_regression" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;sequential_regression
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" sequential_regression">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.analysis.sequential_regression(data)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.analysis.sequential_regression(y)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;y
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.analysis.sequential_regression(n_solutions)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;n_solutions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.analysis.sequential_regression(covariates)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;covariates
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.analysis.sequential_regression(n_bootstraps)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;n_bootstraps
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plotting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Plotting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../utils/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Utils
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Reliability
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            Reliability
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reliability/icc/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ICC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reliability/utils/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Utils
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Stats
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            Stats
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stats/plotting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Plotting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#stats_utils.regression.analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-module"></code>&nbsp;analysis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.analysis.ModelOutput" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;ModelOutput
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.analysis.add_bootstrap_methods_to_ols" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;add_bootstrap_methods_to_ols
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" add_bootstrap_methods_to_ols">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.analysis.add_bootstrap_methods_to_ols(results)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;results
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.analysis.sequential_regression" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;sequential_regression
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" sequential_regression">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.analysis.sequential_regression(data)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.analysis.sequential_regression(y)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;y
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.analysis.sequential_regression(n_solutions)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;n_solutions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.analysis.sequential_regression(covariates)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;covariates
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats_utils.regression.analysis.sequential_regression(n_bootstraps)" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-parameter"></code>&nbsp;n_bootstraps
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="analysis">Analysis</h1>
+<p>This module contains functions for regression models.</p>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="stats_utils.regression.analysis" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">analysis</span>
+
+
+</h2>
+
+    <div class="doc doc-contents first">
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Classes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="stats_utils.regression.analysis.ModelOutput" href="#stats_utils.regression.analysis.ModelOutput">ModelOutput</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Dataclass to store the output of the sequential regression function</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="stats_utils.regression.analysis.add_bootstrap_methods_to_ols" href="#stats_utils.regression.analysis.add_bootstrap_methods_to_ols">add_bootstrap_methods_to_ols</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Add bootstrap methods to the OLS results class.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="stats_utils.regression.analysis.sequential_regression" href="#stats_utils.regression.analysis.sequential_regression">sequential_regression</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Fits a series of regression models across different factor solutions.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="stats_utils.regression.analysis.ModelOutput" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">ModelOutput</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">ModelOutput</span><span class="p">(</span><span class="n">models</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.List" href="https://docs.python.org/3/library/typing.html#typing.List">List</a></span><span class="p">[</span><span class="n"><span title="statsmodels.formula.api.ols">ols</span></span><span class="p">],</span> <span class="n">anova_results</span><span class="p">:</span> <span class="n"><span title="pandas.DataFrame">DataFrame</span></span><span class="p">,</span> <span class="n">r2s</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.List" href="https://docs.python.org/3/library/typing.html#typing.List">List</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">],</span> <span class="n">summaries</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.List" href="https://docs.python.org/3/library/typing.html#typing.List">List</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">],</span> <span class="n">n_solutions</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span><span class="p">,</span> <span class="n">y_var</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <p>Dataclass to store the output of the sequential regression function</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><span title="stats_utils.regression.analysis.ModelOutput.models">models</span></code></b>
+              (<code><a class="autorefs autorefs-external" title="typing.List" href="https://docs.python.org/3/library/typing.html#typing.List">List</a>[<span title="statsmodels.formula.api.ols">ols</span>]</code>)
+          –
+          <div class="doc-md-description">
+            <p>List of fitted models.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="stats_utils.regression.analysis.ModelOutput.anova_results">anova_results</span></code></b>
+              (<code><span title="pandas.DataFrame">DataFrame</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>ANOVA results.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="stats_utils.regression.analysis.ModelOutput.r2s">r2s</span></code></b>
+              (<code><a class="autorefs autorefs-external" title="typing.List" href="https://docs.python.org/3/library/typing.html#typing.List">List</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]</code>)
+          –
+          <div class="doc-md-description">
+            <p>List of adjusted r2s.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="stats_utils.regression.analysis.ModelOutput.summaries">summaries</span></code></b>
+              (<code><a class="autorefs autorefs-external" title="typing.List" href="https://docs.python.org/3/library/typing.html#typing.List">List</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</code>)
+          –
+          <div class="doc-md-description">
+            <p>List of model summaries.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="stats_utils.regression.analysis.ModelOutput.n_solutions">n_solutions</span></code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Number of solutions.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="stats_utils.regression.analysis.ModelOutput.y_var">y_var</span></code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Name of dependent variable.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="stats_utils.regression.analysis.add_bootstrap_methods_to_ols" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">add_bootstrap_methods_to_ols</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">add_bootstrap_methods_to_ols</span><span class="p">(</span><span class="n"><a class="autorefs autorefs-internal" href="#stats_utils.regression.analysis.add_bootstrap_methods_to_ols(results)">results</a></span><span class="p">:</span> <span class="n"><span title="statsmodels.regression.linear_model.RegressionResults">RegressionResults</span></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="statsmodels.regression.linear_model.RegressionResults">RegressionResults</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Add bootstrap methods to the OLS results class.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<h4 id="stats_utils.regression.analysis.add_bootstrap_methods_to_ols(results)" class="doc doc-heading doc-heading-parameter">              <b><code>results</code></b>
+</h4>              (<code><span title="statsmodels.regression.linear_model.RegressionResults">RegressionResults</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>The results of an OLS regression.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<b><code>RegressionResults</code></b> (              <code><span title="statsmodels.regression.linear_model.RegressionResults">RegressionResults</span></code>
+)          –
+          <div class="doc-md-description">
+            <p>The results object with the bootstrap methods added.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <pre><code># Assuming `results` is the output of an OLS regression
+results = add_bootstrap_methods_to_ols(results)
+results.bootstrap(n_bootstraps=2000)
+conf_int = results.conf_int_bootstrap()
+
+# Access the pvals
+pvals = results.pvalues_bootstrap
+</code></pre>
+</details>
+            <details class="quote">
+              <summary>Source code in <code>stats_utils/regression/analysis.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 14</span>
+<span class="normal"> 15</span>
+<span class="normal"> 16</span>
+<span class="normal"> 17</span>
+<span class="normal"> 18</span>
+<span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">add_bootstrap_methods_to_ols</span><span class="p">(</span>
+    <span class="n">results</span><span class="p">:</span> <span class="n">RegressionResults</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RegressionResults</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add bootstrap methods to the OLS results class.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        results (RegressionResults): The results of an OLS regression.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        RegressionResults: The results object with the bootstrap methods added.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        ```</span>
+<span class="sd">        # Assuming `results` is the output of an OLS regression</span>
+<span class="sd">        results = add_bootstrap_methods_to_ols(results)</span>
+<span class="sd">        results.bootstrap(n_bootstraps=2000)</span>
+<span class="sd">        conf_int = results.conf_int_bootstrap()</span>
+
+<span class="sd">        # Access the pvals</span>
+<span class="sd">        pvals = results.pvalues_bootstrap</span>
+<span class="sd">        ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">bootstrap</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">n_bootstraps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2000</span><span class="p">,</span> <span class="n">random_state</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">42</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform a bootstrap on the OLS model, allowing for the estimation of</span>
+<span class="sd">        confidence intervals.</span>
+
+<span class="sd">        Results are stored in the `coefs_bootstrap_samples` attribute.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            n_bootstraps (int, optional): Number of bootstrap samples.</span>
+<span class="sd">                Defaults to `1000`.</span>
+<span class="sd">            random_state (int, optional): Random state for reproducibility.</span>
+<span class="sd">                Defaults to `42`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Get the exog and endog variables</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">exog</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">endog</span>
+
+        <span class="c1"># Create randomstate</span>
+        <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+        <span class="c1"># Create a list to store the bootstrapped coefficients</span>
+        <span class="n">coef_samples</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Run the bootstrap, looping over the number of bootstraps</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_bootstraps</span><span class="p">):</span>
+
+            <span class="c1"># Resample the data with replacement</span>
+            <span class="n">x_resampled</span><span class="p">,</span> <span class="n">y_resampled</span> <span class="o">=</span> <span class="n">resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+
+            <span class="c1"># Fit the model to the resampled data</span>
+            <span class="n">model_resampled</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">y_resampled</span><span class="p">,</span> <span class="n">x_resampled</span><span class="p">)</span>
+
+            <span class="c1"># Fit the resampled model and store the coefficients</span>
+            <span class="n">results_resampled</span> <span class="o">=</span> <span class="n">model_resampled</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+
+            <span class="n">coef_samples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">results_resampled</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">coefs_bootstrap_samples</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">coef_samples</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">conf_int_bootstrap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the confidence intervals (and p values) for the coefficients of the</span>
+<span class="sd">        OLS model, based on the bootstrapped coefficients.</span>
+
+<span class="sd">        Useful for situations where the assumptions of the OLS model are not</span>
+<span class="sd">        met.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            alpha (float, optional): Alpha level. Defaults to `0.05`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: Dataframe of confidence intervals, with</span>
+<span class="sd">                columns `0` and `1`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Get the lower and upper bounds of the confidence interval</span>
+        <span class="n">lower_bound</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coefs_bootstrap_samples</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">alpha</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">upper_bound</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coefs_bootstrap_samples</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># Get the p-values</span>
+        <span class="n">p_values</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coefs_bootstrap_samples</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+            <span class="n">axis</span><span class="o">=</span><span class="mi">0</span>
+        <span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">coefs_bootstrap_samples</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">p_values</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">p_values</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">p_values</span><span class="p">)</span>
+
+        <span class="c1"># Store the confidence intervals in the same format as the normal</span>
+        <span class="c1"># conf_int method</span>
+        <span class="n">conf_int</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">lower_bound</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Store the p values in the same format as the normal pvalues method</span>
+        <span class="n">p_values</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">index</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pvalues_bootstrap</span> <span class="o">=</span> <span class="n">p_values</span>
+
+        <span class="k">return</span> <span class="n">conf_int</span>
+
+    <span class="n">results</span><span class="o">.</span><span class="n">bootstrap</span> <span class="o">=</span> <span class="n">MethodType</span><span class="p">(</span><span class="n">bootstrap</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
+    <span class="n">results</span><span class="o">.</span><span class="n">conf_int_bootstrap</span> <span class="o">=</span> <span class="n">MethodType</span><span class="p">(</span><span class="n">conf_int_bootstrap</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">results</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="stats_utils.regression.analysis.sequential_regression" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">sequential_regression</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">sequential_regression</span><span class="p">(</span><span class="n"><a class="autorefs autorefs-internal" href="#stats_utils.regression.analysis.sequential_regression(data)">data</a></span><span class="p">:</span> <span class="n"><span title="pandas.DataFrame">DataFrame</span></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#stats_utils.regression.analysis.sequential_regression(y)">y</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#stats_utils.regression.analysis.sequential_regression(n_solutions)">n_solutions</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#stats_utils.regression.analysis.sequential_regression(covariates)">covariates</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.List" href="https://docs.python.org/3/library/typing.html#typing.List">List</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span> <span class="n"><a class="autorefs autorefs-internal" href="#stats_utils.regression.analysis.sequential_regression(n_bootstraps)">n_bootstraps</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">2000</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Tuple" href="https://docs.python.org/3/library/typing.html#typing.Tuple">Tuple</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" title="typing.List" href="https://docs.python.org/3/library/typing.html#typing.List">List</a></span><span class="p">[</span><span class="n"><span title="statsmodels.formula.api.ols">ols</span></span><span class="p">],</span> <span class="n"><span title="pandas.DataFrame">DataFrame</span></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-external" title="typing.List" href="https://docs.python.org/3/library/typing.html#typing.List">List</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">]]</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Fits a series of regression models across different factor solutions.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<h4 id="stats_utils.regression.analysis.sequential_regression(data)" class="doc doc-heading doc-heading-parameter">              <b><code>data</code></b>
+</h4>              (<code><span title="pandas.DataFrame">DataFrame</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Dataframe containing dependent variable,
+covariates (age and gender), and factor scores. Assumes that
+factor scores are named <code>Sol{N}_ML{M}</code> where <code>N</code> is the total
+number of factors and <code>M</code> is the number of each factor within
+that solution.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+<h4 id="stats_utils.regression.analysis.sequential_regression(y)" class="doc doc-heading doc-heading-parameter">              <b><code>y</code></b>
+</h4>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Name of dependent variable.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+<h4 id="stats_utils.regression.analysis.sequential_regression(n_solutions)" class="doc doc-heading doc-heading-parameter">              <b><code>n_solutions</code></b>
+</h4>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>, default:
+                  <code>4</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Number of solutions. Defaults to <code>4</code>.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+<h4 id="stats_utils.regression.analysis.sequential_regression(covariates)" class="doc doc-heading doc-heading-parameter">              <b><code>covariates</code></b>
+</h4>              (<code><a class="autorefs autorefs-external" title="typing.List" href="https://docs.python.org/3/library/typing.html#typing.List">List</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</code>, default:
+                  <code>[]</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>List of covariates to include in the model
+(in addition to age and gender). Defaults to <code>[]</code>.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+<h4 id="stats_utils.regression.analysis.sequential_regression(n_bootstraps)" class="doc doc-heading doc-heading-parameter">              <b><code>n_bootstraps</code></b>
+</h4>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>, default:
+                  <code>2000</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Number of bootstraps to run. Defaults
+to <code>2000</code>.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><a class="autorefs autorefs-external" title="typing.Tuple" href="https://docs.python.org/3/library/typing.html#typing.Tuple">Tuple</a>[<a class="autorefs autorefs-external" title="typing.List" href="https://docs.python.org/3/library/typing.html#typing.List">List</a>[<span title="statsmodels.formula.api.ols">ols</span>], <span title="pandas.DataFrame">DataFrame</span>, <a class="autorefs autorefs-external" title="typing.List" href="https://docs.python.org/3/library/typing.html#typing.List">List</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>]]</code>
+          –
+          <div class="doc-md-description">
+            <p>Tuple[List[smf.ols], pd.DataFrame, List[float]]: Returns the list of
+fitted models, the ANOVA table, and a list of adjusted r2s.</p>
+          </div>
+        </li>
+    </ul>
+
+            <details class="quote">
+              <summary>Source code in <code>stats_utils/regression/analysis.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">sequential_regression</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">y</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">n_solutions</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="n">covariates</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+    <span class="n">n_bootstraps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2000</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">],</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fits a series of regression models across different factor solutions.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data (pd.DataFrame): Dataframe containing dependent variable,</span>
+<span class="sd">            covariates (age and gender), and factor scores. Assumes that</span>
+<span class="sd">            factor scores are named `Sol{N}_ML{M}` where `N` is the total</span>
+<span class="sd">            number of factors and `M` is the number of each factor within</span>
+<span class="sd">            that solution.</span>
+<span class="sd">        y (str): Name of dependent variable.</span>
+<span class="sd">        n_solutions (int, optional): Number of solutions. Defaults to `4`.</span>
+<span class="sd">        covariates (List[str]): List of covariates to include in the model</span>
+<span class="sd">            (in addition to age and gender). Defaults to `[]`.</span>
+<span class="sd">        n_bootstraps (int, optional): Number of bootstraps to run. Defaults</span>
+<span class="sd">            to `2000`.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Tuple[List[smf.ols], pd.DataFrame, List[float]]: Returns the list of</span>
+<span class="sd">            fitted models, the ANOVA table, and a list of adjusted r2s.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># List to store model fits</span>
+    <span class="n">models</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Loop over number of solutions</span>
+    <span class="k">for</span> <span class="n">n_factors</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_solutions</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># Get predictors</span>
+        <span class="n">predictors</span> <span class="o">=</span> <span class="s2">&quot; + &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="p">[</span><span class="s2">&quot;Sol</span><span class="si">{0}</span><span class="s2">_ML</span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_factors</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_factors</span><span class="p">)]</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">predictors</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">predictors</span> <span class="o">=</span> <span class="s2">&quot; + &quot;</span> <span class="o">+</span> <span class="n">predictors</span>
+        <span class="n">covariates_string</span> <span class="o">=</span> <span class="s2">&quot; + &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">covariates</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">covariates</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">covariates_string</span> <span class="o">=</span> <span class="s2">&quot; + &quot;</span> <span class="o">+</span> <span class="n">covariates_string</span>
+        <span class="n">predictors</span> <span class="o">=</span> <span class="s2">&quot;age + gender&quot;</span> <span class="o">+</span> <span class="n">covariates_string</span> <span class="o">+</span> <span class="n">predictors</span>
+
+        <span class="c1"># Specify model</span>
+        <span class="n">formula_string</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2"> ~ </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">predictors</span><span class="p">)</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula_string</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="c1"># Fit model</span>
+        <span class="n">fitted_model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+
+        <span class="c1"># Replace the class with the bootstrap results class</span>
+        <span class="n">fitted_model</span> <span class="o">=</span> <span class="n">add_bootstrap_methods_to_ols</span><span class="p">(</span><span class="n">fitted_model</span><span class="p">)</span>
+
+        <span class="c1"># Run bootstrap</span>
+        <span class="n">fitted_model</span><span class="o">.</span><span class="n">bootstrap</span><span class="p">(</span><span class="n">n_bootstraps</span><span class="p">)</span>
+
+        <span class="c1"># Add to list</span>
+        <span class="n">models</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fitted_model</span><span class="p">)</span>
+
+    <span class="c1"># Run ANOVA on fits</span>
+    <span class="n">anova_results</span> <span class="o">=</span> <span class="n">anova_lm</span><span class="p">(</span><span class="o">*</span><span class="n">models</span><span class="p">)</span>
+
+    <span class="c1"># get adjusted r2s for each model and put into a dataframe</span>
+    <span class="n">r2s</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
+        <span class="n">r2s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">rsquared_adj</span><span class="p">)</span>
+
+    <span class="c1"># Get summaries</span>
+    <span class="n">summaries</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">models</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">ModelOutput</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">anova_results</span><span class="p">,</span> <span class="n">r2s</span><span class="p">,</span> <span class="n">summaries</span><span class="p">,</span> <span class="n">n_solutions</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.1e8ae164.min.js"></script>
+      
+    
+  </body>
+</html>
